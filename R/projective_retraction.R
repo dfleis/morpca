@@ -10,5 +10,5 @@ projective_retraction <- function(L, Y, eta, gamma) {
   Y_tmp <- Y
   Y_tmp[is.na(Y_tmp)] <- 0
 
-  L - eta * riemann_gradient(L, percentile_threshold(L - Y, gamma))
+  L - eta * riemann_gradient_cpp(L, percentile_threshold(L - Y, gamma))
 }

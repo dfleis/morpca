@@ -6,6 +6,18 @@
 
 using namespace Rcpp;
 
+// riemann_gradient_cpp
+arma::mat riemann_gradient_cpp(arma::mat L, arma::mat D);
+RcppExport SEXP _morpca_riemann_gradient_cpp(SEXP LSEXP, SEXP DSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type L(LSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type D(DSEXP);
+    rcpp_result_gen = Rcpp::wrap(riemann_gradient_cpp(L, D));
+    return rcpp_result_gen;
+END_RCPP
+}
 // GetProxOne
 arma::vec GetProxOne(arma::vec y, arma::vec weights);
 RcppExport SEXP _morpca_GetProxOne(SEXP ySEXP, SEXP weightsSEXP) {
@@ -46,6 +58,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_morpca_riemann_gradient_cpp", (DL_FUNC) &_morpca_riemann_gradient_cpp, 2},
     {"_morpca_GetProxOne", (DL_FUNC) &_morpca_GetProxOne, 2},
     {"_morpca_FitAdditive", (DL_FUNC) &_morpca_FitAdditive, 16},
     {NULL, NULL, 0}
