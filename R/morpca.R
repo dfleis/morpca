@@ -4,18 +4,18 @@ morpca <- function(Y, r, gamma,
                    steps_out = T) {
   # TO DO:
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
+  #   * Handle partial observations (NA values)
+
+  L_list <- vector(mode = 'list')
 
   # Initialize best rank-r approximation of Y
   # (? check this since the paper says to intialize with the best rank-r
   # approx. of f(Y) which appears to be a typo ?)
-  L0 <- rank_r_approx_cpp(Y, r)
-  L_list <- vector(mode = 'list')
-  L_list[[1]] <- L0
+  L_list[[1]] <- rank_r_approx_cpp(Y, r)
 
   if (retraction[1] == "projective") {
     for (k in 1:(step_max - 1)) {
-      L_tmp   <- projective_retraction(L_list[[k]], Y, eta = step_size, gamma)
-      L_list[[k + 1]] <- rank_r_approx_cpp(L_tmp, r)
+      L_list[[k + 1]] <- projective_retraction(L_list[[k]], Y, step_size, gamma)
     }
   } else if (retraction[1] == "orthogonal") {
     ### TO DO
