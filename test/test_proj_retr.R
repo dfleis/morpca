@@ -1,13 +1,13 @@
 library(devtools)
-install_github("dfleis/morpca")
+#install_github("dfleis/morpca")
 
 library(morpca)
 
 #==========================#
 #===== set parameters =====#
 #==========================#
-n1 <- 100 # rows
-n2 <- 100 # columns
+n1 <- 500 # rows
+n2 <- 600 # columns
 r <- 5 # r must be <= min(n1, n2)
 
 SIGMA <- diag(rep(1, r))
@@ -24,15 +24,20 @@ svd_X <- svd(X)
 U <- svd_X$u[,1:r]
 V <- svd_X$v[,1:r]
 
-Y0 <- U %*% tcrossprod(SIGMA, V)
+Y0 <- U %*% SIGMA %*% t(V)
 Y <- apply(Y0, 2, function(y) {y[sample(n1, 25)] <- rnorm(25); y})
 
 #=====================================#
 #=============== TESTS ===============#
 #=====================================#
+pt <- proc.time()
 L <- morpca(Y = Y, r = r, gamma = gamma,
             retraction = "projective",
             step_size  = step_size,
-            step_max   = step_max)
+            step_max   = step_max,
+            steps_out  = F)
+proc.time() - pt
 
-
+err <- sapply(L, function(l) 0.5 * sum(percentile_threshold(l - Y, gamma)^2))
+plot(err, log = 'y', type = 'l')
+image(L)

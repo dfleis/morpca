@@ -1,6 +1,7 @@
 morpca <- function(Y, r, gamma,
                    retraction = c("projective", "orthogonal"),
-                   step_size, step_max, tol = .Machine$double.eps) {
+                   step_size, step_max, tol = .Machine$double.eps,
+                   steps_out = T) {
   # TO DO:
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
 
@@ -20,5 +21,9 @@ morpca <- function(Y, r, gamma,
     ### handle error
   }
 
-  L_list
+  if (steps_out) {
+    L_list
+  } else {
+    L_list[[length(L_list)]]
+  }
 }
