@@ -3,9 +3,11 @@ install_github("dfleis/morpca")
 
 library(morpca)
 
+#==========================#
 #===== set parameters =====#
-n1 <- 10 # rows
-n2 <- 20 # columns
+#==========================#
+n1 <- 100 # rows
+n2 <- 100 # columns
 r <- 5 # r must be <= min(n1, n2)
 
 SIGMA <- diag(rep(1, r))
@@ -14,7 +16,9 @@ gamma <- 0.2
 step_size <- 0.5 # step size
 step_max <- 10 # max nb of steps
 
+#========================#
 #===== generate data ====#
+#========================#
 X <- matrix(rnorm(n1 * n2), nrow = n1)
 svd_X <- svd(X)
 U <- svd_X$u[,1:r]
