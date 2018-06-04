@@ -5,15 +5,17 @@ morpca <- function(Y, r, gamma,
   # TO DO:
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
 
-  # Initialize best rank-r approximation of F(L - Y)
-  # (? check this since I'm doing the best rank-r approx of Y)
-  L0 <- init_approx(Y, r)
+  # Initialize best rank-r approximation of Y
+  # (? check this since the paper says to intialize with the best rank-r
+  # approx. of f(Y) which appears to be a typo ?)
+  L0 <- rank_r_approx_cpp(Y, r)
   L_list <- vector(mode = 'list')
   L_list[[1]] <- L0
 
   if (retraction[1] == "projective") {
     for (k in 1:(step_max - 1)) {
-      L_list[[k + 1]] <- projective_retraction(L_list[[k]], Y, eta = step_size, gamma)
+      L_tmp   <- projective_retraction(L_list[[k]], Y, eta = step_size, gamma)
+      L_list[[k + 1]] <- rank_r_approx_cpp(L_tmp, r)
     }
   } else if (retraction[1] == "orthogonal") {
     ### TO DO

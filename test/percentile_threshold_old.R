@@ -1,4 +1,4 @@
-percentile_threshold <- function(A, gamma) {
+percentile_threshold_old <- function(A, gamma) {
   # Thresholding function F in the objective function
   # 0.5 ||F(L - Y)||^2_2
   #

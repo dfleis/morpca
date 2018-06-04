@@ -1,5 +1,5 @@
 library(devtools)
-install_github("dfleis/morpca")
+#install_github("dfleis/morpca")
 
 library(morpca)
 
@@ -40,12 +40,6 @@ proc.time() - pt
 
 err <- sapply(L, function(l) 0.5 * sum(percentile_threshold(l - Y, gamma)^2))
 plot(err, log = 'y', type = 'l')
-
-
-X <- matrix(rnorm(5 * 3), nrow = 5)
-percentile_threshold(X, 0.5)
-percentile_threshold2(X, 0.5)
-riemann_gradient_cpp(A, A)
 
 
 
