@@ -1,5 +1,5 @@
 library(devtools)
-#install_github("dfleis/morpca")
+install_github("dfleis/morpca")
 
 library(morpca)
 

@@ -9,3 +9,7 @@ percentile_threshold_cpp <- function(A, row_pctls, col_pctls) {
     .Call('_morpca_percentile_threshold_cpp', PACKAGE = 'morpca', A, row_pctls, col_pctls)
 }
 
+rank_r_approx_cpp <- function(Y, r) {
+    .Call('_morpca_rank_r_approx_cpp', PACKAGE = 'morpca', Y, r)
+}
+

@@ -31,10 +31,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rank_r_approx_cpp
+arma::mat rank_r_approx_cpp(arma::mat Y, int r);
+RcppExport SEXP _morpca_rank_r_approx_cpp(SEXP YSEXP, SEXP rSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< int >::type r(rSEXP);
+    rcpp_result_gen = Rcpp::wrap(rank_r_approx_cpp(Y, r));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_morpca_riemann_gradient_cpp", (DL_FUNC) &_morpca_riemann_gradient_cpp, 2},
     {"_morpca_percentile_threshold_cpp", (DL_FUNC) &_morpca_percentile_threshold_cpp, 3},
+    {"_morpca_rank_r_approx_cpp", (DL_FUNC) &_morpca_rank_r_approx_cpp, 2},
     {NULL, NULL, 0}
 };
 

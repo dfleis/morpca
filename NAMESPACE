@@ -3,6 +3,5 @@ useDynLib(morpca)
 importFrom(Rcpp, evalCpp)
 
 export(morpca,
-       init_approx,
        percentile_threshold,
        projective_retraction)
