@@ -5,11 +5,7 @@ riemann_gradient_cpp <- function(L, D) {
     .Call('_morpca_riemann_gradient_cpp', PACKAGE = 'morpca', L, D)
 }
 
-GetProxOne <- function(y, weights) {
-    .Call('_morpca_GetProxOne', PACKAGE = 'morpca', y, weights)
-}
-
-FitAdditive <- function(y, weights, ak, x, beta, max_lambda, lam_min_ratio, alpha, tol, p, J, n, nlam, max_iter, beta_is_zero, active_set) {
-    .Call('_morpca_FitAdditive', PACKAGE = 'morpca', y, weights, ak, x, beta, max_lambda, lam_min_ratio, alpha, tol, p, J, n, nlam, max_iter, beta_is_zero, active_set)
+percentile_threshold_cpp <- function(A, row_pctls, col_pctls) {
+    .Call('_morpca_percentile_threshold_cpp', PACKAGE = 'morpca', A, row_pctls, col_pctls)
 }
 

@@ -5,5 +5,4 @@ importFrom(Rcpp, evalCpp)
 export(morpca,
        init_approx,
        percentile_threshold,
-       riemann_gradient,
        projective_retraction)
