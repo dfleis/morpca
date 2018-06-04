@@ -1,0 +1,5 @@
+useDynLib(morpca)
+
+importFrom(Rcpp, evalCpp)
+
+export(morpca)
