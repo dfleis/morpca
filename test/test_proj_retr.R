@@ -1,5 +1,5 @@
 library(devtools)
-#install_github("dfleis/morpca")
+install_github("dfleis/morpca")
 
 library(morpca)
 
@@ -13,8 +13,8 @@ r <- 5 # r must be 0 < r <= min(n1, n2)
 SIGMA <- diag(rep(1, r))
 gamma <- 0.2
 
-step_size <- 0.1 # step size
-step_max <- 100 # max nb of steps
+step_size <- 1 # step size
+step_max <- 500 # max nb of steps
 
 #========================#
 #===== generate data ====#
@@ -25,7 +25,7 @@ U <- svd_X$u[,1:r]
 V <- svd_X$v[,1:r]
 
 Lstar <- U %*% SIGMA %*% t(V)
-Y <- apply(Y0, 2, function(y) {y[sample(n1, 25)] <- rnorm(25); y})
+Y <- apply(Lstar, 2, function(y) {y[sample(n1, 25)] <- rnorm(25); y})
 
 #=====================================#
 #=============== TESTS ===============#
@@ -40,7 +40,5 @@ proc.time() - pt
 
 err <- sapply(L, function(l) sqrt(sum((l - Lstar)^2)))
 plot(err, log = 'y', type = 'l')
-
-
 
 

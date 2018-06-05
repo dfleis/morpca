@@ -13,7 +13,7 @@ percentile_threshold_old <- function(A, gamma) {
   A_out <- A
   for (i in 1:nrow(A)) {
     for (j in 1:ncol(A)) {
-      if ((abs(A[i,j]) <= row_pctl[i]) & (abs(A[i,j]) <= col_pctl[j])) {
+      if ((abs(A[i,j]) > row_pctl[i]) & (abs(A[i,j]) > col_pctl[j])) {
         A_out[i,j] <- 0
       }
     }
