@@ -14,7 +14,7 @@ SIGMA <- diag(rep(1, r))
 gamma <- 0.2
 
 step_size <- 1 # step size
-step_max <- 500 # max nb of steps
+step_max <- 100 # max nb of steps
 
 #========================#
 #===== generate data ====#
@@ -38,7 +38,7 @@ L <- morpca(Y = Y, r = r, gamma = gamma,
             steps_out  = T)
 proc.time() - pt
 
-err <- sapply(L, function(l) sqrt(sum((l - Lstar)^2)))
+err <- sapply(L, function(L_i) sqrt(sum((L_i - Lstar)^2)))
 plot(err, log = 'y', type = 'l')
 
 
