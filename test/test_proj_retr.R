@@ -8,13 +8,13 @@ library(morpca)
 #==========================#
 n1 <- 500 # rows
 n2 <- 600 # columns
-r <- 5 # r must be <= min(n1, n2)
+r <- 5 # r must be 0 < r <= min(n1, n2)
 
 SIGMA <- diag(rep(1, r))
 gamma <- 0.2
 
 step_size <- 0.1 # step size
-step_max <- 10 # max nb of steps
+step_max <- 100 # max nb of steps
 
 #========================#
 #===== generate data ====#
@@ -38,7 +38,7 @@ L <- morpca(Y = Y, r = r, gamma = gamma,
             steps_out  = T)
 proc.time() - pt
 
-err <- sapply(L, function(l) sum((l - Lstar)^2))
+err <- sapply(L, function(l) sqrt(sum((l - Lstar)^2)))
 plot(err, log = 'y', type = 'l')
 
 

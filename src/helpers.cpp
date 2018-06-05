@@ -35,7 +35,7 @@ arma::mat percentile_threshold_cpp(arma::mat A,
 		for (int j = 0; j < ncol; j++) {
 			double Aij_abs = std::abs(A(i,j));		
 		
-			if ((Aij_abs <= row_pctls(i)) & (Aij_abs <= col_pctls(j))) {
+			if ((Aij_abs > row_pctls(i)) & (Aij_abs > col_pctls(j))) {
 				A_out(i,j) = 0;
 			}
 		}
