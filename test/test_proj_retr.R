@@ -1,5 +1,7 @@
+library(pracma) # generating random orthogonal matrices via randortho()
 library(devtools)
 #install_github("dfleis/morpca")
+
 
 library(morpca)
 
@@ -35,7 +37,8 @@ L <- morpca(Y = Y, r = r, gamma = gamma,
             retraction = "projective",
             step_size  = step_size,
             step_max   = step_max,
-            steps_out  = T)
+            steps_out  = T,
+            verbose    = T)
 proc.time() - pt
 
 #===================#
