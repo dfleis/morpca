@@ -1,8 +1,7 @@
 library(pracma) # generating random orthogonal matrices via randortho()
+
 library(devtools)
 #install_github("dfleis/morpca")
-
-
 library(morpca)
 
 #==========================#
@@ -15,19 +14,19 @@ r <- 5 # r must be 0 < r <= min(n1, n2)
 SIGMA <- diag(rep(1, r))
 gamma <- 0.2
 
-step_size <- 0.1 # step size
+step_size <- 0.05 # step size
 step_max <- 100 # max nb of steps
 
 #========================#
 #===== generate data ====#
 #========================#
-X <- matrix(rnorm(n1 * n2), nrow = n1)
-svd_X <- svd(X)
-U <- svd_X$u[,1:r]
-V <- svd_X$v[,1:r]
+U <- randortho(n1)[,1:r]
+V <- randortho(n2)[,1:r]
 
 Lstar <- U %*% SIGMA %*% t(V)
 Y <- apply(Lstar, 2, function(y) {y[sample(n1, 25)] <- rnorm(25); y})
+length(apply(Lstar, 2, sum))
+dim(Y)
 
 #=====================================#
 #=============== TESTS ===============#
@@ -44,8 +43,8 @@ proc.time() - pt
 #===================#
 #===== FIGURES =====#
 #===================#
-image(Y, col = colorRampPalette(c("white", "black"))(64))
-image(Lstar, col = colorRampPalette(c("white", "black"))(64))
+#image(Y, col = colorRampPalette(c("white", "black"))(64))
+#image(Lstar, col = colorRampPalette(c("white", "black"))(64))
 
 err <- sapply(L, function(L_i) sqrt(sum((L_i - Lstar)^2)))
 plot(err, type = 'l')
