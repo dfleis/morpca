@@ -35,8 +35,7 @@ L <- morpca(Y = Y, r = r, gamma = gamma,
             retraction = "projective",
             step_size  = step_size,
             step_max   = step_max,
-            steps_out  = T,
-            verbose    = T)
+            steps_out  = T)
 proc.time() - pt
 
 #===================#
