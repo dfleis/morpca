@@ -1,10 +1,11 @@
 morpca <- function(Y, r, gamma,
                    retraction = c("projective", "orthogonal"),
                    step_size, step_max, tol = .Machine$double.eps,
-                   steps_out = T) {
+                   steps_out = F) {
   # TO DO:
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
   #   * Handle partial observations (NA values)
+  #   * Handle missing and invalid inputs
 
   L_list <- vector(mode = 'list')
 
@@ -13,6 +14,8 @@ morpca <- function(Y, r, gamma,
   # approx. of f(Y) which appears to be a typo ?)
   L_list[[1]] <- rank_r_approx_cpp(Y, r)
 
+  # Determine which retraction to use onto the underlying manifold of
+  # rank-r matrices
   if (retraction[1] == "projective") {
     for (k in 1:(step_max - 1)) {
       L_list[[k + 1]] <- projective_retraction(L_list[[k]], Y, step_size, gamma)

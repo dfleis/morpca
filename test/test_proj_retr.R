@@ -1,5 +1,5 @@
 library(devtools)
-install_github("dfleis/morpca")
+#install_github("dfleis/morpca")
 
 library(morpca)
 
@@ -13,7 +13,7 @@ r <- 5 # r must be 0 < r <= min(n1, n2)
 SIGMA <- diag(rep(1, r))
 gamma <- 0.2
 
-step_size <- 1 # step size
+step_size <- 0.1 # step size
 step_max <- 100 # max nb of steps
 
 #========================#
@@ -35,10 +35,15 @@ L <- morpca(Y = Y, r = r, gamma = gamma,
             retraction = "projective",
             step_size  = step_size,
             step_max   = step_max,
-            steps_out  = T)
+            steps_out  = T,
+            verbose    = T)
 proc.time() - pt
 
+#===================#
+#===== FIGURES =====#
+#===================#
+image(Y, col = colorRampPalette(c("white", "black"))(64))
+image(Lstar, col = colorRampPalette(c("white", "black"))(64))
+
 err <- sapply(L, function(L_i) sqrt(sum((L_i - Lstar)^2)))
-plot(err, log = 'y', type = 'l')
-
-
+plot(err, type = 'l')
