@@ -15,7 +15,7 @@ SIGMA <- diag(rep(1, r))
 gamma <- 0.2
 
 step_size <- 0.05 # step size
-step_max <- 100 # max nb of steps
+step_max <- 10 # max nb of steps
 
 #========================#
 #===== generate data ====#
@@ -25,8 +25,6 @@ V <- randortho(n2)[,1:r]
 
 Lstar <- U %*% SIGMA %*% t(V)
 Y <- apply(Lstar, 2, function(y) {y[sample(n1, 25)] <- rnorm(25); y})
-length(apply(Lstar, 2, sum))
-dim(Y)
 
 #=====================================#
 #=============== TESTS ===============#
