@@ -16,10 +16,9 @@ arma::mat riemann_gradient_cpp(arma::mat L,
 	
 	svd_econ(U, s, V, L);
 	
+	// is there a faster way to do this?
 	UUt = U * U.t();
 	VVt = V * V.t();
-		
-	// is there a faster way to do this?
 	return UUt * D + D * VVt - UUt * D * VVt;
 }
 
