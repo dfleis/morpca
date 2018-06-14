@@ -59,7 +59,7 @@ idx <- 1
 Mtmp1 <- Y1[idx, 1:ncol(Y)]
 Mtmp <- matrix(Mtmp1, nrow = 256, byrow = F)
 M <- t(apply(Mtmp, 2, rev))
-image(M, col = colorRampPalette(c("black", "white"))(32),
+image(M, col = colorRampPalette(c("black", "white"))(64),
       xaxt = 'n', yaxt = 'n')
 
 #====================#

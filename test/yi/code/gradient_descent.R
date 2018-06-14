@@ -2,9 +2,11 @@ gradient_descent <- function(Y, r, alpha, stepsize, opt, maxiter, sparsity) {
 
     L <- threshold(Y, alpha, sparsity)
     SVD <- svd(L %*% t(L))
+
     U <- SVD$u
     S <- diag(SVD$d)
     V <- SVD$v
+
     L <- U[,1:r]%*%(t(U[,1:r])%*%L)
     iter <- 1
     normY <- norm(Y,"f")
