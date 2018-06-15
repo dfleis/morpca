@@ -51,17 +51,6 @@ for (j in 1:n2) {
 Y0 <- sparseMatrix(I0, J0, x = X0)
 Y1 <- as.matrix(Y0)
 
-#===============================#
-#===== VISUALIZE THE INPUT =====#
-#===============================#
-# visualizing the shoppingmall data
-idx <- 1
-Mtmp1 <- Y1[idx, 1:ncol(Y)]
-Mtmp <- matrix(Mtmp1, nrow = 256, byrow = F)
-M <- t(apply(Mtmp, 2, rev))
-image(M, col = colorRampPalette(c("black", "white"))(64),
-      xaxt = 'n', yaxt = 'n')
-
 #====================#
 #===== OPTIMIZE =====#
 #====================#
@@ -72,6 +61,24 @@ L <- gradient_descent(Y = Y, r = r, alpha = alpha_bnd,
 proc.time() - pt
 
 
+#================================#
+#===== VISUALIZE IN/OUTPUTS =====#
+#================================#
+frame.idx <- 99
+
+# inputs
+input.tmp0 <- Y[frame.idx, 1:ncol(Y)]
+input.tmp1 <- matrix(input.tmp0, nrow = 256, byrow = F)
+input.plot <- t(apply(input.tmp1, 2, rev))
+image(input.plot, col = colorRampPalette(c("black", "white"))(64),
+      xaxt = 'n', yaxt = 'n')
+
+# outputs
+output.tmp0 <- L[frame.idx, 1:ncol(L)]
+output.tmp1 <- matrix(output.tmp0, nrow = 256, byrow = F)
+output.plot <- t(apply(output.tmp1, 2, rev))
+image(output.plot, col = colorRampPalette(c("black", "white"))(64),
+      xaxt = 'n', yaxt = 'n')
 
 
 
