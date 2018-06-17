@@ -2,19 +2,22 @@ gradient_descent <- function(Y, r, alpha, stepsize, opt, maxiter, sparsity) {
 
     L <- threshold(Y, alpha, sparsity)
     SVD <- svd(L %*% t(L))
+    #SVD <- svd(L)
 
     U <- SVD$u
     S <- diag(SVD$d)
     V <- SVD$v
 
     L <- U[,1:r]%*%(t(U[,1:r])%*%L)
+    #L <- U[,1:r] %*% S[1:r, 1:r] %*% t(V[,1:r])
+
     iter <- 1
     normY <- norm(Y,"f")
     n1 <- nrow(L)
     n2 <- ncol(L)
-    #all_L <- list()
+    all_L <- list()
     alle <- list()
-    #all_L[iter] <- L
+    all_L[[iter]] <- L
 
     if(opt==1){
         iter <- 1
@@ -27,7 +30,8 @@ gradient_descent <- function(Y, r, alpha, stepsize, opt, maxiter, sparsity) {
           L1 <- L-stepsize*gradient
           L <- L1%*%V%*%solve((t(U)%*%L1%*%V))%*%(t(U)%*%L1)
           iter <- iter+1
-          #all_L[iter] <- L
+
+          all_L[[iter]] <- L
           alle[iter] <- norm(gradient,"f")/normY
        }
         }
@@ -35,8 +39,15 @@ gradient_descent <- function(Y, r, alpha, stepsize, opt, maxiter, sparsity) {
           iter <- 1
 
           while (iter<maxiter){
+              print(iter)
+              SVD <- svd(L)
+              U <- SVD$u
+              V <- SVD$v
               gradient <- threshold( L-Y,alpha,sparsity )
-              projected_gradient <- gradient%*%V[,1:r]%*%t(V[,1:r])+U[,1:r]%*%t(U[,1:r])%*%gradient-U[,1:r]%*%t(U[,1:r])%*%gradient%*%V[,1:r]%*%t(V[,1:r])
+
+              projected_gradient <- gradient %*% tcrossprod(V) + tcrossprod(U) %*% gradient + tcrossprod(U) %*% gradient %*% tcrossprod(V)
+
+              #projected_gradient <- gradient%*%V[,1:r]%*%t(V[,1:r])+U[,1:r]%*%t(U[,1:r])%*%gradient-U[,1:r]%*%t(U[,1:r])%*%gradient%*%V[,1:r]%*%t(V[,1:r])
               L1 <- L-stepsize*projected_gradient
               SVDL <- svd(L1)
               U <- SVDL$u
@@ -45,11 +56,12 @@ gradient_descent <- function(Y, r, alpha, stepsize, opt, maxiter, sparsity) {
 
               L <- U[,1:r]%*%S[1:r,1:r]%*%t(V[,1:r])
               iter <- iter+1
-              #all_L[iter] <- L
-              alle[iter] <- norm(L-truth,"f")
+              all_L[[iter]] <- L
+              alle[iter] <- norm(gradient,"f")/normY
 
           }
        }
 
-    return(list(L,alle))
+    return(list(L, alle, all_L))
 }
+

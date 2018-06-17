@@ -1,14 +1,14 @@
-library(pracma) # generating random orthogonal matrices via randortho()
-
+library(Rcpp)
 library(devtools)
 #install_github("dfleis/morpca")
 library(morpca)
 
+
 #==========================#
 #===== set parameters =====#
 #==========================#
-n1 <- 500 # rows
-n2 <- 600 # columns
+n1 <- 50 # rows
+n2 <- 60 # columns
 r <- 5 # r must be 0 < r <= min(n1, n2)
 
 SIGMA <- diag(rep(1, r))
@@ -20,11 +20,16 @@ step_max <- 10 # max nb of steps
 #========================#
 #===== generate data ====#
 #========================#
-U <- randortho(n1)[,1:r]
-V <- randortho(n2)[,1:r]
+X <- matrix(rnorm(n1 * n2), nrow = n1)
+
+# generate orthogonal matrices U (n1 x r) and V (n2 x r)
+svd_X <- svd(X)
+U <- svd_X$u[,1:r]
+V <- svd_X$v[,1:r]
 
 Lstar <- U %*% SIGMA %*% t(V)
-Y <- apply(Lstar, 2, function(y) {y[sample(n1, 25)] <- rnorm(25); y})
+
+Y <- apply(Lstar, 2, function(l) {l[sample(n1, 25)] <- rnorm(25); l})
 
 #=====================================#
 #=============== TESTS ===============#
@@ -37,6 +42,7 @@ L <- morpca(Y = Y, r = r, gamma = gamma,
             steps_out  = T,
             verbose    = T)
 proc.time() - pt
+
 
 #===================#
 #===== FIGURES =====#

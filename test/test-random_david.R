@@ -37,16 +37,20 @@ Lstar <- U %*% SIGMA %*% t(V)
 
 Y <- apply(Lstar, 2, function(l) {l[sample(n1, 25)] <- rnorm(25); l})
 
+sparsity_mat <- matrix(rep(1, nrow(Y) * ncol(Y)), nrow = nrow(Y))
+
 #====================#
 #===== OPTIMIZE =====#
 #====================#
 pt <- proc.time()
 L.opt <- gradient_descent(Y = Y, r = r, alpha = alpha_bnd,
-                          stepsize = 0.7, opt = 1, maxiter = 100,
-                          sparsity = matrix(rep(1, nrow(Y) * ncol(Y)), nrow = nrow(Y)))
+                          stepsize = 0.7, opt = 1, maxiter = 10,
+                          sparsity = sparsity_mat)
 proc.time() - pt
 
-plot(unlist(L.opt[[2]]), type = 'o', pch = 21, bg = 'white', cex = 0.5, log = 'y')
+
+plot(unlist(L.opt[[2]]), type = 'l', log = 'y')
+
 
 #=====================#
 #===== VISUALIZE =====#

@@ -16,6 +16,8 @@ morpca <- function(Y, r, gamma,
   # approx. of f(Y) which appears to be a typo ?)
   L_list[[1]] <- rank_r_approx_cpp(Y, r)
 
+  print(dim(L_list[[1]]))
+
   if (verbose) {
     print(paste0("Step = 1. Objective value = ",
                 round(0.5 * sum(percentile_threshold(L_list[[1]] - Y, gamma)^2), 5)))

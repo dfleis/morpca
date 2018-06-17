@@ -9,7 +9,8 @@ projective_retraction <- function(L, Y, eta, gamma) {
   # threshold gamma
 
   # compute descent step
-  L_tmp <- L - eta * riemann_gradient_cpp(L, percentile_threshold(L - Y, gamma))
+  F_thresh <- percentile_threshold(L - Y, gamma)
+  L_tmp <- L - eta * riemann_gradient_cpp(L, F_thresh)
 
   # return the best rank-r approximation of the descent step
   rank_r_approx_cpp(L_tmp, r)
