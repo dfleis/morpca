@@ -20,6 +20,9 @@ r <- 5
 alpha_bnd <- 0.2 # percentile threshold
 p <- 0.5 # pct of corrupted/missing data
 
+stepsize <- 0.7
+maxiter <- 100
+
 SIGMA <- diag(r)
 
 #=========================#
@@ -44,11 +47,12 @@ sparsity_mat <- matrix(rep(1, nrow(Y) * ncol(Y)), nrow = nrow(Y))
 #====================#
 pt <- proc.time()
 L.opt <- gradient_descent(Y = Y, r = r, alpha = alpha_bnd,
-                          stepsize = 0.7, opt = 1, maxiter = 10,
+                          stepsize = stepsize, opt = 1, maxiter = maxiter,
                           sparsity = sparsity_mat)
 proc.time() - pt
 
 
+plot(sapply(L.opt[[3]], function(L) norm(L - Lstar, "f")), type = 'l', log = 'y')
 plot(unlist(L.opt[[2]]), type = 'l', log = 'y')
 
 
