@@ -2,7 +2,7 @@ morpca <- function(Y, r, gamma, sparsity,
                    retraction = c("projective", "orthographic"),
                    stepsize,
                    maxiter,
-                   tol       = .Machine$double.eps,
+                   tol       = .Machine$double.eps, #to do...
                    stepsout  = F,
                    verbose   = F) {
   # TO DO:
@@ -14,6 +14,7 @@ morpca <- function(Y, r, gamma, sparsity,
 
   # set up data structures
   L_list <- gradient_list <- vector(mode = 'list', length = maxiter + 1)
+  n1 <- nrow(Y); n2 <- ncol(Y)
 
   ##################
   ### INITIALIZE ###
@@ -28,7 +29,7 @@ morpca <- function(Y, r, gamma, sparsity,
   #gradient_list[[1]] <- percentile_threshold(L_list[[1]] - Y, gamma)
 
   ### NEW: (not sure what this starting point is?)
-  L <- threshold(Y, gamma, sparsity)
+  L <- threshold(Y, gamma, n1, n2, sparsity)
   SVD <- svd(tcrossprod(L))
   U <- SVD$u
 
@@ -38,64 +39,50 @@ morpca <- function(Y, r, gamma, sparsity,
   if (verbose) {
     print(
       paste0("k = 0. Gradient/objective value = ",
-             round(norm(gradient_list[[1]], "f"), 5)))
+             sprintf("%.5g", norm(gradient_list[[1]], "f"), 5)))
   }
 
-  if (retraction[1] == "projective") {
+  if (retraction[1] == "projective" |
+      retraction[1] == "proj" |
+      retraction[1] == "p") {
     #########################
     # PROJECTIVE RETRACTION #
     #########################
 
     for (k in 1:maxiter) {
-      out <- projective_retraction(L_list[[k]], Y, stepsize, gamma, sparsity)
+      out <- projective_retraction(L = L_list[[k]], Y = Y, r = r, gamma = gamma,
+                                   eta = stepsize, n1 = n1, n2 = n2,
+                                   sparsity = sparsity)
       L_list[[k + 1]]        <- out$L
       gradient_list[[k + 1]] <- out$gradient
 
       if (verbose) {
         print(
           paste0("k = ", k, ". Gradient/objective value = ",
-                 round(norm(gradient_list[[k + 1]], "f"), 5)))
+                 sprintf("%.5g", norm(gradient_list[[k + 1]], "f"), 5)))
       }
     }
 
-  } else if (retraction[1] == "orthographic") {
+  } else if (retraction[1] == "orthographic" |
+             retraction[1] == "orth" |
+             retraction[1] == "o") {
     ###########################
     # ORTHOGRAPHIC RETRACTION #
     ###########################
 
-    # for (k in 1:maxiter) {
-    #   L_list[[k + 1]] <- orthographic_retraction(L_list[[k]], Y, stepsize, gamma)
-    #   gradient_list[[k + 1]] <- percentile_threshold(L_list[[k + 1]] - Y, gamma)
-    #
-    #   if (verbose) {
-    #     print(
-    #       paste0("k = ", k, ". Gradient/objective value = ",
-    #              round(norm(gradient_list[[k + 1]], "f"), 5)))
-    #   }
-    # }
-
     for (k in 1:maxiter) {
-      out <- orthographic_retraction(L_list[[k]], Y, stepsize, gamma, sparsity)
+      out <- orthographic_retraction(L = L_list[[k]], Y = Y, r = r, gamma = gamma,
+                                     eta = stepsize, n1 = n1, n2 = n2,
+                                     sparsity = sparsity)
       L_list[[k + 1]]        <- out$L
       gradient_list[[k + 1]] <- out$gradient
-
-      # L <- L_list[[k]]
-      # U <- L[,sample(n2,r)]
-      # V <- t(L[sample(n1,r),])
-      # #gradient <- threshold(L - Y, gamma, sparsity)
-      # gradient <- percentile_threshold(L - Y, gamma)
-      # L1 <- L - stepsize * gradient
-      #
-      # L_list[[k + 1]] <- (L1 %*% V) %*% solve((t(U) %*% L1 %*% V)) %*% (t(U) %*% L1)
-      # gradient_list[[k + 1]] <- gradient
 
       if (verbose) {
         print(
           paste0("k = ", k, ". Gradient/objective value = ",
-                 round(norm(gradient_list[[k + 1]], "f"), 5)))
+                 sprintf("%.5g", norm(gradient_list[[k + 1]], "f"), 5)))
       }
     }
-
 
   } else {
     ############################
