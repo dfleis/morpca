@@ -20,7 +20,7 @@ orthographic_retraction <- function(L, Y, eta, gamma, sparsity) {
 
   # descent step
   L_tmp <- L - eta * gradient
-  L_out <- (L_tmp %*% R) %*% solve((t(Q) %*% L_tmp %*% R)) %*% (t(Q) %*% L_tmp)
+  L_out <- (L_tmp %*% R) %*% solve(crossprod(Q, L_tmp) %*% R) %*% crossprod(Q, L_tmp)
 
   # return solution and corresponding gradient
   list("L" = L_out, "gradient" = gradient)
