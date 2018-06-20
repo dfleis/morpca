@@ -1,4 +1,10 @@
 threshold <- function(X, gamma, n1, n2, sparsity) {
+  #
+  #
+  # TO DO:
+  #   * Documentation
+  #   * C++ implementation
+
   t1 <- rep(1, n1); t2 <- rep(1, n2)
   X <- X * sparsity
 

@@ -64,7 +64,7 @@ proc.time() - pt
 #================================#
 #===== VISUALIZE IN/OUTPUTS =====#
 #================================#
-frame.idx <- 99
+frame.idx <- 100
 
 # inputs
 input.tmp0 <- Y[frame.idx, 1:ncol(Y)]

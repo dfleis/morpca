@@ -14,6 +14,7 @@ orthographic_retraction <- function(L, Y, r, gamma, eta, n1, n2, sparsity) {
   #
   # TO DO:
   #   * Implement matrix calculations in C++
+
   gradient <- threshold(L - Y, gamma, n1, n2, sparsity)
 
   Q <- L[,sample(n2, r)] # any r independent columns of L

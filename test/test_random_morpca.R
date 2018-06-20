@@ -1,4 +1,3 @@
-#library(Rcpp)
 #library(devtools)
 #install_github("dfleis/morpca")
 library(morpca)
@@ -6,7 +5,7 @@ library(morpca)
 #==========================#
 #===== set parameters =====#
 #==========================#
-retraction <- "orthographic"
+retraction <- "o"
 n1 <- 500 # rows
 n2 <- 600 # columns
 r <- 5 # r must be 0 < r <= min(n1, n2)
@@ -47,11 +46,8 @@ proc.time() - pt
 
 grad1 <- sapply(L.opt$gradient, function(grad) norm(grad, "f"))
 grad2 <- grad1/norm(Y, "f")
-err <- sapply(L.opt$solution, function(L) norm(L - Lstar, "f"))
 
-plot(grad1, type = 'l', log = 'y')
-plot(grad2, type = 'l', log = 'y')
-plot(err, type = 'l', log = 'y')
+err <- sapply(L.opt$solution, function(L) norm(L - Lstar, "f"))
 
 #===================#
 #===== FIGURES =====#
@@ -59,5 +55,6 @@ plot(err, type = 'l', log = 'y')
 #image(Y, col = colorRampPalette(c("white", "black"))(64))
 #image(Lstar, col = colorRampPalette(c("white", "black"))(64))
 
-err <- sapply(L, function(L_i) sqrt(sum((L_i - Lstar)^2)))
-plot(err, type = 'l')
+plot(grad1, type = 'l', log = 'y')
+plot(grad2, type = 'l', log = 'y')
+plot(err, type = 'l', log = 'y')
