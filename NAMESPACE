@@ -4,6 +4,6 @@ importFrom(Rcpp, evalCpp)
 
 export(morpca,
        threshold,
-       percentile_threshold,
        projective_retraction,
-       orthographic_retraction)
+       orthographic_retraction,
+       print.morpca)

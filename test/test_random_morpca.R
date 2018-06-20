@@ -29,6 +29,7 @@ V <- svd_X$v[,1:r]
 Lstar <- U %*% SIGMA %*% t(V)
 
 Y <- apply(Lstar, 2, function(l) {l[sample(n1, 25)] <- rnorm(25); l})
+Sstar <- Y - Lstar
 sparsity_mat <- matrix(1, nrow = n1, ncol = n2)
 
 #=====================================#
@@ -48,6 +49,9 @@ grad1 <- sapply(L.opt$gradient, function(grad) norm(grad, "f"))
 grad2 <- grad1/norm(Y, "f")
 
 err <- sapply(L.opt$solution, function(L) norm(L - Lstar, "f"))
+
+class(L.opt)
+L.opt
 
 #===================#
 #===== FIGURES =====#

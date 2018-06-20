@@ -9,6 +9,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
   #   * Handle partial observations (NA values)
   #   * Handle missing and invalid inputs
+  #   * Determine what the default retraction ought to be
   #   * Make 'verbose' work more elegantly
   #   * Set default behavior for inputs
   #   * Rename input 'gamma' to 'threshold' NOTE: WE MUST RENAME THE CORRESPONDING
@@ -106,7 +107,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   #================#
   # RETURN OUTPTUS #
   #================#
-  out <- list(); class(out) <- "morpca"
+  out <- list()
   out <- list("data"       = Y,
               "rank"       = r,
               "gamma"      = gamma,
@@ -116,15 +117,16 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
               "maxiter"    = maxiter,
               "tol"        = tol,
               "solution"   = L_list,
-              "gradient"   = gradient_list)
+              "gradient"   = gradient_list,
+              "call"       = match.call())
 
   # check if the user requests the full descent path output
-  # or only the final low rank matrix
-  if (stepsout) {
-    out
-  } else {
+  # or only the solution for the final low rank matrix
+  if (!stepsout) {
     out$solution <- out$solution[[length(L_list)]]
     out$gradient <- out$gradient[[length(gradient_list)]]
-    out
   }
+
+  class(out) <- "morpca"
+  out
 }
