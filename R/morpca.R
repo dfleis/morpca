@@ -11,7 +11,6 @@ morpca <- function(Y, r, gamma, sparsity,
   #   * Handle missing and invalid inputs
   #   * Make 'verbose' work more elegantly
   #   * Set default behavior for inputs
-  #   * Create morpca type object in a list and output this object
   #   * Rename input 'gamma' to 'threshold' NOTE: WE MUST RENAME THE CORRESPONDING
   #     threshold() FUNCTION!
 
@@ -91,7 +90,7 @@ morpca <- function(Y, r, gamma, sparsity,
   #================#
   # RETURN OUTPTUS #
   #================#
-
+  out <- list(); class(out) <- "morpca"
   out <- list("data"       = Y,
               "rank"       = r,
               "gamma"      = gamma,
