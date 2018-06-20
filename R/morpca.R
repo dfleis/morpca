@@ -1,4 +1,4 @@
-morpca <- function(Y, r, gamma, sparsity,
+morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
                    retraction = c("projective", "orthographic"),
                    stepsize  = NULL,
                    maxiter   = 100,
@@ -13,6 +13,22 @@ morpca <- function(Y, r, gamma, sparsity,
   #   * Set default behavior for inputs
   #   * Rename input 'gamma' to 'threshold' NOTE: WE MUST RENAME THE CORRESPONDING
   #     threshold() FUNCTION!
+
+  if (is.null(Y)) {
+    # return warning/set default? return error?
+  }
+  if (is.null(r)) {
+    # return warning/set default? return error?
+  }
+  if (is.null(gamma)) {
+    # return warning/set default? return error?
+  }
+  if (is.null(sparsity)) {
+    # return warning/set default? return error?
+  }
+  if (is.null(stepsize)) {
+    # return warning/set default? return error?
+  }
 
   # set up data structures
   L_list <- gradient_list <- vector(mode = 'list', length = maxiter + 1)
