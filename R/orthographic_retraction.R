@@ -26,9 +26,13 @@ orthographic_retraction <- function(L, Y, r, gamma, eta, n1, n2, sparsity) {
   QtL_tmp <- crossprod(Q, L_tmp)
   L_out <- tcrossprod(L_tmp, R) %*% solve(tcrossprod(QtL_tmp, R)) %*% QtL_tmp
 
-  #L_out <- orthographic_retraction_cpp(L_tmp, Q, R)
-
-
   # return solution and corresponding gradient
+
   list("L" = L_out, "gradient" = gradient)
 }
+
+
+
+
+
+

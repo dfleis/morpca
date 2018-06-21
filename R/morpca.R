@@ -1,3 +1,38 @@
+#' Manifold Optimization for Robust PCA
+#'
+#' @details Implementation of the robust PCA algorithms outlined in
+#' Zhang, T. and Yang, Y. (forthcoming) to recover the underlying low rank
+#' matrix \eqn{L^*} given an input matrix \eqn{Y} assumed to be of the form
+#' \deqn{Y = L^* + S^*,} where \eqn{S^*} is a sparse matrix representing the
+#' noise and \eqn{L^*} representing the signal. This implementation offers
+#' both the projective and orthographic retractions as methods to map from
+#' the input matrix's tangent space back to the manifold of low rank matrices.
+#'
+#' @param Y Input matrix composed of the sum of matrices \eqn{L^*}
+#'          (signal) and \eqn{S^*} (noise).
+#' @param r Rank of the underlying matrix \eqn{L^*} and its estimate.
+#' @param gamma Value between 0 and 1 corresponding to percentile
+#'              for the hard thresholding procedure.
+#' @param sparsity
+#' @param retraction String specifying which retraction technique
+#'                   should be applied. Currently implemented are the
+#'                   \code{"projective"} and \code{"orthographic"}
+#'                   retractions.
+#' @param stepsize Positive nonzero number corresponding to the step size \eqn{\eta}
+#'                 in the gradient descent algorithm.
+#' @param maxiter Positive integer specifying the maximum number of steps
+#'                compute for the gradient descent algorithm.
+#' @param tol
+#' @param stepsout Boolean value. If \code{stepsout = T} then the function
+#'                 returns the output low rank matrix estimate and corresponding
+#'                 gradient for every step in the gradient descent algorithm.
+#' @param verbose Boolean value. If \code{verbose = T} then the gradient
+#'                descent algorithm reports the current step number and
+#'                value of the objective function at each iteration.
+#'
+#' @return Returns an object of class \code{morpca} with elements: TO DO...
+#'
+#' @export
 morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
                    retraction = c("projective", "orthographic"),
                    stepsize  = NULL,
@@ -29,6 +64,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   }
   if (is.null(stepsize)) {
     # return warning/set default? return error?
+    # check if stepsize <= 0
   }
 
   # set up data structures
