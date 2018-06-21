@@ -22,11 +22,11 @@ should be applied. Currently implemented are the
 \code{"projective"} and \code{"orthographic"}
 retractions.}
 
-\item{stepsize}{Positive nonzero number corresponding to the step size \eqn{\eta}
-in the gradient descent algorithm.}
+\item{stepsize}{Positive nonzero number corresponding to the step size
+\eqn{\eta} in the gradient descent algorithm.}
 
-\item{maxiter}{Positive integer specifying the maximum number of steps
-compute for the gradient descent algorithm.}
+\item{maxiter}{Positive nonzero integer specifying the maximum number
+of steps to compute for the gradient descent algorithm.}
 
 \item{stepsout}{Boolean value. If \code{stepsout = T} then the function
 returns the output low rank matrix estimate and corresponding
