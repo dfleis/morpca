@@ -18,6 +18,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// orthographic_descent_cpp
+arma::mat orthographic_descent_cpp(arma::mat L_tmp, arma::mat Q, arma::mat R);
+RcppExport SEXP _morpca_orthographic_descent_cpp(SEXP L_tmpSEXP, SEXP QSEXP, SEXP RSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type L_tmp(L_tmpSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Q(QSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type R(RSEXP);
+    rcpp_result_gen = Rcpp::wrap(orthographic_descent_cpp(L_tmp, Q, R));
+    return rcpp_result_gen;
+END_RCPP
+}
 // percentile_threshold_cpp
 arma::mat percentile_threshold_cpp(arma::mat A, arma::vec row_pctls, arma::vec col_pctls);
 RcppExport SEXP _morpca_percentile_threshold_cpp(SEXP ASEXP, SEXP row_pctlsSEXP, SEXP col_pctlsSEXP) {
@@ -46,6 +59,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_morpca_riemann_gradient_cpp", (DL_FUNC) &_morpca_riemann_gradient_cpp, 2},
+    {"_morpca_orthographic_descent_cpp", (DL_FUNC) &_morpca_orthographic_descent_cpp, 3},
     {"_morpca_percentile_threshold_cpp", (DL_FUNC) &_morpca_percentile_threshold_cpp, 3},
     {"_morpca_rank_r_approx_cpp", (DL_FUNC) &_morpca_rank_r_approx_cpp, 2},
     {NULL, NULL, 0}

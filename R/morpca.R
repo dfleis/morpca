@@ -119,14 +119,12 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
               "solution"   = L_list,
               "gradient"   = gradient_list,
               "call"       = match.call())
-
   # check if the user requests the full descent path output
   # or only the solution for the final low rank matrix
   if (!stepsout) {
     out$solution <- out$solution[[length(L_list)]]
     out$gradient <- out$gradient[[length(gradient_list)]]
   }
-
   class(out) <- "morpca"
   out
 }

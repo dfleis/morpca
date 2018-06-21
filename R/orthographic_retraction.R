@@ -13,7 +13,8 @@ orthographic_retraction <- function(L, Y, r, gamma, eta, n1, n2, sparsity) {
   # sparsity matrix sparsity
   #
   # TO DO:
-  #   * Implement matrix calculations in C++
+  #   * Check if n1 > n2 or n2 < n1 since we can speed up
+  #     multiplications by knowing which case we're in
 
   gradient <- threshold(L - Y, gamma, n1, n2, sparsity)
 
@@ -22,7 +23,8 @@ orthographic_retraction <- function(L, Y, r, gamma, eta, n1, n2, sparsity) {
 
   # descent step
   L_tmp <- L - eta * gradient
-  L_out <- (L_tmp %*% R) %*% solve(crossprod(Q, L_tmp) %*% R) %*% crossprod(Q, L_tmp)
+  #L_out <- (L_tmp %*% R) %*% solve(crossprod(Q, L_tmp) %*% R) %*% crossprod(Q, L_tmp)
+  L_out <- orthographic_descent_cpp(L_tmp, Q, R)
 
   # return solution and corresponding gradient
   list("L" = L_out, "gradient" = gradient)

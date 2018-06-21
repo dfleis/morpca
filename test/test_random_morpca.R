@@ -49,9 +49,7 @@ grad1 <- sapply(L.opt$gradient, function(grad) norm(grad, "f"))
 grad2 <- grad1/norm(Y, "f")
 
 err <- sapply(L.opt$solution, function(L) norm(L - Lstar, "f"))
-
-class(L.opt)
-L.opt
+loss <- sapply(L.opt$solution, function(L) norm(L - Y, "f"))
 
 #===================#
 #===== FIGURES =====#
@@ -62,3 +60,4 @@ L.opt
 plot(grad1, type = 'l', log = 'y')
 plot(grad2, type = 'l', log = 'y')
 plot(err, type = 'l', log = 'y')
+plot(loss, type = 'l', log = 'y')

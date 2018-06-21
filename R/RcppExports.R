@@ -5,6 +5,10 @@ riemann_gradient_cpp <- function(L, D) {
     .Call('_morpca_riemann_gradient_cpp', PACKAGE = 'morpca', L, D)
 }
 
+orthographic_descent_cpp <- function(L_tmp, Q, R) {
+    .Call('_morpca_orthographic_descent_cpp', PACKAGE = 'morpca', L_tmp, Q, R)
+}
+
 percentile_threshold_cpp <- function(A, row_pctls, col_pctls) {
     .Call('_morpca_percentile_threshold_cpp', PACKAGE = 'morpca', A, row_pctls, col_pctls)
 }

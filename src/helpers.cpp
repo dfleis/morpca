@@ -6,8 +6,7 @@ using namespace arma;
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-arma::mat riemann_gradient_cpp(arma::mat L, 
-							   arma::mat D) {
+arma::mat riemann_gradient_cpp(arma::mat L, arma::mat D) {
 	// Computes the Riemann gradient of a matrix L 
 	// given Euclidean gradient D
 	
@@ -23,22 +22,36 @@ arma::mat riemann_gradient_cpp(arma::mat L,
 }
 
 // [[Rcpp::export]]
-arma::mat percentile_threshold_cpp(arma::mat A,
-								   arma::vec row_pctls,
-								   arma::vec col_pctls) {
+arma::mat orthographic_descent_cpp(arma::mat L_tmp, arma::mat Q, arma::mat R) {
+	// computes the descent step for the orthographic retraction given
+	// L_tmp = L^{(k)} - eta * gradient (Euclidean descent)
+	// Q = any r independent columns of L^{(k)} (dimension n1 x r)
+	// R = any r independent rows of L^{(k)} (dimension n2 x r)
+	
+	arma::mat QtL_tmp, QtL_tmpR_inv;
+	
+	QtL_tmp = Q.t() * L_tmp;
+	QtL_tmpR_inv = inv(QtL_tmp * R);
+	
+	return L_tmp * R * QtL_tmpR_inv * QtL_tmp;
+}
+
+// DEPRICATED
+// [[Rcpp::export]]
+arma::mat percentile_threshold_cpp(arma::mat A, arma::vec row_pctls, arma::vec col_pctls) {
 	// gamma-th percentile thresholding of matrix A given row and 
 	// column percentiles								   
 	int nrow = A.n_rows;
 	int ncol = A.n_cols;							   
-	
+
 	arma::mat A_out = A;
 	arma::mat A_abs = abs(A);
 	double Aij_abs;
-	
+
 	for (int i = 0; i <	nrow; i++) {
 		for (int j = 0; j < ncol; j++) {
 			Aij_abs = A_abs(i,j);		
-		
+
 			if ((Aij_abs > row_pctls(i)) & (Aij_abs > col_pctls(j))) {
 				A_out(i,j) = 0;
 			}
