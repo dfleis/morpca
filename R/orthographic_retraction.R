@@ -19,12 +19,15 @@ orthographic_retraction <- function(L, Y, r, gamma, eta, n1, n2, sparsity) {
   gradient <- threshold(L - Y, gamma, n1, n2, sparsity)
 
   Q <- L[,sample(n2, r)] # any r independent columns of L
-  R <- t(L[sample(n1, r),]) # any r independent rows of L
+  R <- L[sample(n1, r),] # any r independent rows of L
 
   # descent step
   L_tmp <- L - eta * gradient
-  #L_out <- (L_tmp %*% R) %*% solve(crossprod(Q, L_tmp) %*% R) %*% crossprod(Q, L_tmp)
-  L_out <- orthographic_descent_cpp(L_tmp, Q, R)
+  QtL_tmp <- crossprod(Q, L_tmp)
+  L_out <- tcrossprod(L_tmp, R) %*% solve(tcrossprod(QtL_tmp, R)) %*% QtL_tmp
+
+  #L_out <- orthographic_retraction_cpp(L_tmp, Q, R)
+
 
   # return solution and corresponding gradient
   list("L" = L_out, "gradient" = gradient)

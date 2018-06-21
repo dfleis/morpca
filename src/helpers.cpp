@@ -22,12 +22,13 @@ arma::mat riemann_gradient_cpp(arma::mat L, arma::mat D) {
 }
 
 // [[Rcpp::export]]
-arma::mat orthographic_descent_cpp(arma::mat L_tmp, arma::mat Q, arma::mat R) {
+arma::mat orthographic_retraction_cpp(arma::mat L_tmp, arma::mat Q, arma::mat R) {
 	// computes the descent step for the orthographic retraction given
 	// L_tmp = L^{(k)} - eta * gradient (Euclidean descent)
 	// Q = any r independent columns of L^{(k)} (dimension n1 x r)
 	// R = any r independent rows of L^{(k)} (dimension n2 x r)
 	
+	// is there a faster way of doing this?
 	arma::mat QtL_tmp, QtL_tmpR_inv;
 	
 	QtL_tmp = Q.t() * L_tmp;
