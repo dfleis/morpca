@@ -5,7 +5,7 @@ library(morpca)
 #==========================#
 #===== set parameters =====#
 #==========================#
-retraction <- "o"
+retraction <- "p"
 n1 <- 500 # rows
 n2 <- 600 # columns
 r <- 5 # r must be 0 < r <= min(n1, n2)

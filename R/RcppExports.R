@@ -9,7 +9,15 @@ orthographic_retraction_cpp <- function(L_tmp, Q, R) {
     .Call('_morpca_orthographic_retraction_cpp', PACKAGE = 'morpca', L_tmp, Q, R)
 }
 
+percentile_threshold_cpp <- function(A, A_abs, row_pctls, col_pctls) {
+    .Call('_morpca_percentile_threshold_cpp', PACKAGE = 'morpca', A, A_abs, row_pctls, col_pctls)
+}
+
 rank_r_approx_cpp <- function(Y, r) {
     .Call('_morpca_rank_r_approx_cpp', PACKAGE = 'morpca', Y, r)
+}
+
+percentile_cpp <- function(x, prob) {
+    .Call('_morpca_percentile_cpp', PACKAGE = 'morpca', x, prob)
 }
 

@@ -1,6 +1,7 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
+#include <cmath> // ceil() and floor()
 
 using namespace arma;
 using namespace Rcpp;
@@ -36,7 +37,29 @@ arma::mat orthographic_retraction_cpp(arma::mat L_tmp, arma::mat Q, arma::mat R)
 	
 	return L_tmp * R * QtL_tmpR_inv * QtL_tmp;
 }
-							   
+
+// [[Rcpp::export]]
+arma::mat percentile_threshold_cpp(arma::mat A, arma::mat A_abs, arma::vec row_pctls, arma::vec col_pctls) {
+	// gamma-th percentile thresholding of matrix A given row and 
+	// column percentiles								   
+	int nrow = A.n_rows;
+	int ncol = A.n_cols;							   
+
+	arma::mat A_out = A;
+	double Aij_abs;
+
+	for (int i = 0; i <	nrow; i++) {
+		for (int j = 0; j < ncol; j++) {
+			Aij_abs = A_abs(i,j);		
+
+			if ((Aij_abs > row_pctls(i)) & (Aij_abs > col_pctls(j))) {
+				A_out(i,j) = 0;
+			}
+		}
+	}
+	return A_out;							   
+}								   
+
 // [[Rcpp::export]]
 arma::mat rank_r_approx_cpp(arma::mat Y, int r) {
 	// Computes the best rank-r approximation of matrix Y (via the
@@ -56,6 +79,27 @@ arma::mat rank_r_approx_cpp(arma::mat Y, int r) {
 	
 	return U_r * S_r * V_r.t();
 }
+
+// [[Rcpp::export]]
+double percentile_cpp(arma::vec x, double prob) { 
+	// Computes the prob-th percentile of a vector x
+	// analogously to quantile() in R
+	
+	int n = x.size();
+	double index = 1 + (n - 1) * prob;
+	int lo = std::floor(index);
+	int hi = std::ceil(index);
+	arma::vec xs = arma::sort(x);
+	double h = index - lo;
+	
+  	return (1 - h) * xs(lo - 1) + h * xs(hi - 1);
+}
+
+
+
+
+
+
 
 
 
