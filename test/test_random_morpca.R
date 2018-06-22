@@ -48,8 +48,8 @@ proc.time() - pt
 grad1 <- sapply(L.opt$gradient, function(grad) norm(grad, "f"))
 grad2 <- grad1/norm(Y, "f")
 
-err <- sapply(L.opt$solution, function(L) norm(L - Lstar, "f"))
-loss <- sapply(L.opt$solution, function(L) norm(L - Y, "f"))
+err <- sapply(L.opt$Y, function(L) norm(L - Lstar, "f"))
+loss <- sapply(L.opt$Y, function(L) norm(L - Y, "f"))
 
 #===================#
 #===== FIGURES =====#

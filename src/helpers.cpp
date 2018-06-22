@@ -36,31 +36,7 @@ arma::mat orthographic_retraction_cpp(arma::mat L_tmp, arma::mat Q, arma::mat R)
 	
 	return L_tmp * R * QtL_tmpR_inv * QtL_tmp;
 }
-
-// DEPRICATED
-// [[Rcpp::export]]
-arma::mat percentile_threshold_cpp(arma::mat A, arma::vec row_pctls, arma::vec col_pctls) {
-	// gamma-th percentile thresholding of matrix A given row and 
-	// column percentiles								   
-	int nrow = A.n_rows;
-	int ncol = A.n_cols;							   
-
-	arma::mat A_out = A;
-	arma::mat A_abs = abs(A);
-	double Aij_abs;
-
-	for (int i = 0; i <	nrow; i++) {
-		for (int j = 0; j < ncol; j++) {
-			Aij_abs = A_abs(i,j);		
-
-			if ((Aij_abs > row_pctls(i)) & (Aij_abs > col_pctls(j))) {
-				A_out(i,j) = 0;
-			}
-		}
-	}
-	return A_out;							   
-}								   
-
+							   
 // [[Rcpp::export]]
 arma::mat rank_r_approx_cpp(arma::mat Y, int r) {
 	// Computes the best rank-r approximation of matrix Y (via the

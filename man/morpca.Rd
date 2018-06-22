@@ -17,6 +17,8 @@ morpca(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
 \item{gamma}{Value between 0 and 1 corresponding to percentile
 for the hard thresholding procedure.}
 
+\item{sparsity}{TO DO...}
+
 \item{retraction}{String specifying which retraction technique
 should be applied. Currently implemented are the
 \code{"projective"} and \code{"orthographic"}
@@ -28,6 +30,8 @@ retractions.}
 \item{maxiter}{Positive nonzero integer specifying the maximum number
 of steps to compute for the gradient descent algorithm.}
 
+\item{tol}{TO DO...}
+
 \item{stepsout}{Boolean value. If \code{stepsout = T} then the function
 returns the output low rank matrix estimate and corresponding
 gradient for every step in the gradient descent algorithm.}
@@ -37,10 +41,21 @@ descent algorithm reports the current step number and
 value of the objective function at each iteration.}
 }
 \value{
-Returns an object of class \code{morpca} with elements: TO DO...
+Returns an object of class \code{morpca} with elements:
+
+\item{Y}{The original observations used as the input matrix for which we
+seek an underlying low rank matrix.}
+\item{rank}{Rank of the estimated target underlying matrix.}
+\item{gamma}{Thresholding percentile.}
+\item{sparsity}{TO DO...}
+\item{retraction}{TO DO...}
+\item{stepsize}{TO DO...}
+\item{maxiter}{TO DO...}
+\item{solution}{Estimated underlying low rank matrix.}
+\item{gradient}{Corresponding gradient matrix of the objective function.}
 }
 \description{
-Manifold Optimization for Robust PCA
+TO DO...
 }
 \details{
 Implementation of the robust PCA algorithms outlined in
@@ -50,4 +65,11 @@ matrix \eqn{L^*} given an input matrix \eqn{Y} assumed to be of the form
 noise and \eqn{L^*} representing the signal. This implementation offers
 both the projective and orthographic retractions as methods to map from
 the input matrix's tangent space back to the manifold of low rank matrices.
+Robustness is achieved via a hard thresholding function which sets
+entry \eqn{(i,j)} to 0 if it exceeds the \eqn{\gamma}-th percentile of the
+\eqn{i}-th row and \eqn{j}-th column (see Zhang, T. and Yang, Y., forthcoming,
+for details).
+
+TO DO... Talk about the objective function and a brief overview of
+the gradient descent process.
 }

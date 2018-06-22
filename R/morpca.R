@@ -1,5 +1,7 @@
 #' Manifold Optimization for Robust PCA
 #'
+#' TO DO...
+#'
 #' @details Implementation of the robust PCA algorithms outlined in
 #' Zhang, T. and Yang, Y. (forthcoming) to recover the underlying low rank
 #' matrix \eqn{L^*} given an input matrix \eqn{Y} assumed to be of the form
@@ -7,13 +9,20 @@
 #' noise and \eqn{L^*} representing the signal. This implementation offers
 #' both the projective and orthographic retractions as methods to map from
 #' the input matrix's tangent space back to the manifold of low rank matrices.
+#' Robustness is achieved via a hard thresholding function which sets
+#' entry \eqn{(i,j)} to 0 if it exceeds the \eqn{\gamma}-th percentile of the
+#' \eqn{i}-th row and \eqn{j}-th column (see Zhang, T. and Yang, Y., forthcoming,
+#' for details).
+#'
+#' TO DO... Talk about the objective function and a brief overview of
+#' the gradient descent process.
 #'
 #' @param Y Input matrix composed of the sum of matrices \eqn{L^*}
 #'          (signal) and \eqn{S^*} (noise).
 #' @param r Rank of the underlying matrix \eqn{L^*} and its estimate.
 #' @param gamma Value between 0 and 1 corresponding to percentile
 #'              for the hard thresholding procedure.
-#' @param sparsity
+#' @param sparsity TO DO...
 #' @param retraction String specifying which retraction technique
 #'                   should be applied. Currently implemented are the
 #'                   \code{"projective"} and \code{"orthographic"}
@@ -22,7 +31,7 @@
 #'                 \eqn{\eta} in the gradient descent algorithm.
 #' @param maxiter Positive nonzero integer specifying the maximum number
 #'                of steps to compute for the gradient descent algorithm.
-#' @param tol
+#' @param tol TO DO...
 #' @param stepsout Boolean value. If \code{stepsout = T} then the function
 #'                 returns the output low rank matrix estimate and corresponding
 #'                 gradient for every step in the gradient descent algorithm.
@@ -30,7 +39,18 @@
 #'                descent algorithm reports the current step number and
 #'                value of the objective function at each iteration.
 #'
-#' @return Returns an object of class \code{morpca} with elements: TO DO...
+#' @return Returns an object of class \code{morpca} with elements:
+#'
+#' \item{Y}{The original observations used as the input matrix for which we
+#' seek an underlying low rank matrix.}
+#' \item{rank}{Rank of the estimated target underlying matrix.}
+#' \item{gamma}{Thresholding percentile.}
+#' \item{sparsity}{TO DO...}
+#' \item{retraction}{TO DO...}
+#' \item{stepsize}{TO DO...}
+#' \item{maxiter}{TO DO...}
+#' \item{solution}{Estimated underlying low rank matrix.}
+#' \item{gradient}{Corresponding gradient matrix of the objective function.}
 #'
 #' @export
 morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
@@ -49,6 +69,8 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   #   * Set default behavior for inputs
   #   * Rename input 'gamma' to 'threshold' NOTE: WE MUST RENAME THE CORRESPONDING
   #     threshold() FUNCTION!
+  #   * Check if gamma = 0 or gamma = 1 and apply a special case/warning if
+  #     such a scenario is specified?
 
   if (is.null(Y)) {
     # return warning/set default? return error?
@@ -84,7 +106,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   #gradient_list[[1]] <- percentile_threshold(L_list[[1]] - Y, gamma)
 
   ### NEW: (not sure what this starting point is?)
-  L <- threshold(Y, gamma, n1, n2, sparsity)
+  L <- threshold(Y, gamma, sparsity)
   SVD <- svd(tcrossprod(L))
   U <- SVD$u
 
@@ -106,8 +128,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
 
     for (k in 1:maxiter) {
       out <- projective_retraction(L = L_list[[k]], Y = Y, r = r, gamma = gamma,
-                                   eta = stepsize, n1 = n1, n2 = n2,
-                                   sparsity = sparsity)
+                                   eta = stepsize, sparsity = sparsity)
       L_list[[k + 1]]        <- out$L
       gradient_list[[k + 1]] <- out$gradient
 
@@ -124,8 +145,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
 
     for (k in 1:maxiter) {
       out <- orthographic_retraction(L = L_list[[k]], Y = Y, r = r, gamma = gamma,
-                                     eta = stepsize, n1 = n1, n2 = n2,
-                                     sparsity = sparsity)
+                                     eta = stepsize, sparsity = sparsity)
       L_list[[k + 1]]        <- out$L
       gradient_list[[k + 1]] <- out$gradient
 
@@ -144,7 +164,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   # RETURN OUTPTUS #
   #================#
   out <- list()
-  out <- list("data"       = Y,
+  out <- list("Y"          = Y,
               "rank"       = r,
               "gamma"      = gamma,
               "sparsity"   = sparsity,

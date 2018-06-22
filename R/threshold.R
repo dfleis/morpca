@@ -1,9 +1,10 @@
-threshold <- function(X, gamma, n1, n2, sparsity) {
-  #
+threshold <- function(X, gamma, sparsity) {
+  # Thresholding
   #
   # TO DO:
   #   * Documentation
   #   * C++ implementation
+  n1 <- nrow(X); n2 <- ncol(X)
 
   t1 <- rep(1, n1); t2 <- rep(1, n2)
   X <- X * sparsity
