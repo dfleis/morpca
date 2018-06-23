@@ -58,11 +58,13 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
                    retraction = c("projective", "orthographic"),
                    stepsize  = NULL,
                    maxiter   = 100,
-                   tol       = .Machine$double.eps, #to do...
+                   tol       = NULL,
                    stepsout  = F,
                    verbose   = F) {
   # TO DO:
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
+  #     NOTE: tol should depend on the size of the input matrix,
+  #           for example something like n1 * n2 * .Machine$double.eps
   #   * Handle partial observations (NA values)
   #   * Handle missing and invalid inputs
   #   * Determine what the default retraction ought to be
@@ -90,6 +92,12 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
     # return warning/set default? return error?
     # check if stepsize <= 0
   }
+  if (is.null(tol)) { # (not actually implemented yet)
+    # there's probably some theoretical guideline in the paper
+    # look through it to set something up...
+    tol <- ncol(Y) * nrow(Y) * .Machine$double.eps
+  }
+
 
   # set up data structures
   L_list <- gradient_list <- vector(mode = 'list', length = maxiter + 1)
