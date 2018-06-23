@@ -127,6 +127,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   out <- vector(mode = "list", length = 2)
 
   for (k in 1:maxiter) {
+
     if (retraction[1] == "projective" |
         retraction[1] == "proj" |
         retraction[1] == "p") {
@@ -150,17 +151,20 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
     objective[k + 1]       <- norm(gradient_list[[k + 1]], "f")
 
     if (verbose) {
-      print(
-        paste0("k = ", k, ". Objective value = ",
-               sprintf("%.5g", objective[k + 1], 5)))
+     print(
+       paste0("k = ", k, ". Objective value = ",
+              sprintf("%.5g", objective[k + 1], 5)))
     }
 
     if (!stepsout) { # clear memory
-      L_list[[k]] <- NULL
-      gradient_list[[k]] <- NULL
+       L_list[[k]]        <- NA
+       gradient_list[[k]] <- NA
     }
-
   }
+
+  # remove erased elements in output if stepsout = T
+  L_list        <- L_list[!is.na(L_list)]
+  gradient_list <- gradient_list[!is.na(gradient_list)]
 
   #================#
   # RETURN OUTPTUS #

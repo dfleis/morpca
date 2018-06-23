@@ -42,15 +42,14 @@ L.opt <- morpca(Y = Y, r = r, gamma = gamma,
                 retraction = retraction,
                 stepsize   = stepsize,
                 maxiter    = maxiter,
-                stepsout   = T,
+                stepsout   = F,
                 verbose    = T)
 proc.time() - pt
 
-grad1 <- sapply(L.opt$gradient, function(grad) norm(grad, "f"))
-grad2 <- L.opt$objective
-grad2 <- grad1/norm(Y, "f")
+obj1 <- L.opt$objective
+obj2 <- obj1/norm(Y, "f")
 
-err <- sapply(L.opt$Y, function(L) norm(L - Lstar, "f"))
+err <- sapply(L.opt$solution, function(L) norm(L - Lstar, "f"))
 
 #===================#
 #===== FIGURES =====#
@@ -58,6 +57,6 @@ err <- sapply(L.opt$Y, function(L) norm(L - Lstar, "f"))
 #image(Y, col = colorRampPalette(c("white", "black"))(64))
 #image(Lstar, col = colorRampPalette(c("white", "black"))(64))
 
-plot(grad1, type = 'l', log = 'y')
-plot(grad2, type = 'l', log = 'y')
+plot(obj1, type = 'l', log = 'y')
+plot(obj2, type = 'l', log = 'y')
 plot(err, type = 'l', log = 'y')
