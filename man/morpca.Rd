@@ -6,7 +6,7 @@
 \usage{
 morpca(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   retraction = c("projective", "orthographic"), stepsize = NULL,
-  maxiter = 100, tol = .Machine$double.eps, stepsout = F, verbose = F)
+  maxiter = 100, tol = NULL, stepsout = F, verbose = F)
 }
 \arguments{
 \item{Y}{Input matrix composed of the sum of matrices \eqn{L^*}
