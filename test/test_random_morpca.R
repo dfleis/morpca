@@ -30,6 +30,7 @@ Lstar <- U %*% SIGMA %*% t(V)
 
 Y <- apply(Lstar, 2, function(l) {l[sample(n1, 25)] <- rnorm(25); l})
 Sstar <- Y - Lstar
+
 sparsity_mat <- matrix(1, nrow = n1, ncol = n2)
 
 #=====================================#
@@ -46,10 +47,10 @@ L.opt <- morpca(Y = Y, r = r, gamma = gamma,
 proc.time() - pt
 
 grad1 <- sapply(L.opt$gradient, function(grad) norm(grad, "f"))
+grad2 <- L.opt$objective
 grad2 <- grad1/norm(Y, "f")
 
 err <- sapply(L.opt$Y, function(L) norm(L - Lstar, "f"))
-loss <- sapply(L.opt$Y, function(L) norm(L - Y, "f"))
 
 #===================#
 #===== FIGURES =====#
@@ -60,4 +61,3 @@ loss <- sapply(L.opt$Y, function(L) norm(L - Y, "f"))
 plot(grad1, type = 'l', log = 'y')
 plot(grad2, type = 'l', log = 'y')
 plot(err, type = 'l', log = 'y')
-plot(loss, type = 'l', log = 'y')

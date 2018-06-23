@@ -1,17 +1,13 @@
 #=====================#
 #===== LIBRARIES =====#
 #=====================#
-library(Rcpp) # loading helpers.cpp
-library(Matrix)
-library(ggplot2)
-library(R.matlab) # reading .mat files
-
 #library(devtools)
 #install_github("dfleis/morpca")
 library(morpca)
-sourceCpp("src/helpers.cpp")
-source("test/yi/code/threshold.R")
-source("test/yi/code/gradient_descent.R")
+
+library(Matrix)
+library(ggplot2)
+library(R.matlab) # reading .mat files
 
 #=====================#
 #===== LOAD DATA =====#
@@ -24,9 +20,14 @@ Y <- as.matrix(shoppingmall_mat$X)
 #==========================#
 #===== SET PARAMETERS =====#
 #==========================#
-set.seed(1)
+set.seed(124)
+
 r <- 3
-alpha_bnd <- 0.1
+gamma <- 0.1
+retraction <- "o"
+stepsize <- 0.7
+maxiter <- 100
+
 p <- 0.5
 
 #====================================#
@@ -53,20 +54,26 @@ for (j in 1:n2) {
 Y0 <- sparseMatrix(I0, J0, x = X0)
 Y1 <- as.matrix(Y0)
 
+sparsity <- matrix(1, nrow = nrow(Y), ncol = ncol(Y))
+
 #====================#
 #===== OPTIMIZE =====#
 #====================#
 pt <- proc.time()
-L <- gradient_descent(Y = Y, r = r, alpha = alpha_bnd,
-                      stepsize = 0.7, opt = 1, maxiter = 100,
-                      sparsity = matrix(rep(1, nrow(Y) * ncol(Y)), nrow = nrow(Y)))[[1]]
+L.opt <- morpca(Y = Y, r = r, gamma = gamma, sparsity = sparsity,
+                retraction = retraction, stepsize = stepsize,
+                maxiter = maxiter, stepsout = T, verbose = T)
 proc.time() - pt
+
 
 
 #================================#
 #===== VISUALIZE IN/OUTPUTS =====#
 #================================#
-frame.idx <- 100
+opt.idx <- 2
+frame.idx <- 2
+
+L <- L.opt$solution[[opt.idx]]
 
 # inputs
 input.tmp0 <- Y[frame.idx, 1:ncol(Y)]
@@ -80,7 +87,18 @@ output.tmp0 <- L[frame.idx, 1:ncol(L)]
 output.tmp1 <- matrix(output.tmp0, nrow = 256, byrow = F)
 output.plot <- t(apply(output.tmp1, 2, rev))
 image(output.plot, col = colorRampPalette(c("black", "white"))(64),
-      xaxt = 'n', yaxt = 'n')
+      xaxt = 'n', yaxt = 'n', main = opt.idx)
+
+# difference
+diff.plot <- input.plot - output.plot
+image(diff.plot, col = colorRampPalette(c("black", "white"))(64),
+      xaxt = 'n', yaxt = 'n', main = opt.idx)
 
 
-
+grad_norm <- sapply(L.opt$gradient, function(D) norm(D, "f"))
+err_norm <- sapply(L.opt$solution, function(l)
+  norm(threshold(l - Y, gamma = gamma, sparsity = sparsity), "f"))
+plot(grad_norm, type = 'o', pch = 21, bg = 'white',
+     cex = 0.75, main = "Gradient Norm")
+plot(err_norm, type = 'o', pch = 21, bg = 'white',
+     cex = 0.75, main = "Objective")

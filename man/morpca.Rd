@@ -53,6 +53,7 @@ seek an underlying low rank matrix.}
 \item{maxiter}{TO DO...}
 \item{solution}{Estimated underlying low rank matrix.}
 \item{gradient}{Corresponding gradient matrix of the objective function.}
+\item{objective}{Corresponding value of the objective function (Frobenius norm of the gradient matrix).}
 }
 \description{
 TO DO...

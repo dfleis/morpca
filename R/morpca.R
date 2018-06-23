@@ -51,6 +51,7 @@
 #' \item{maxiter}{TO DO...}
 #' \item{solution}{Estimated underlying low rank matrix.}
 #' \item{gradient}{Corresponding gradient matrix of the objective function.}
+#' \item{objective}{Corresponding value of the objective function (Frobenius norm of the gradient matrix).}
 #'
 #' @export
 morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
@@ -61,9 +62,6 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
                    stepsout  = F,
                    verbose   = F) {
   # TO DO:
-  #   * When 'tol' is implemented, make sure to remove list entries that are
-  #     left empty after the final iteration is reached (since we initialize)
-  #     the list output to have maxiter elements
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
   #   * Handle partial observations (NA values)
   #   * Handle missing and invalid inputs
@@ -74,6 +72,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   #     threshold() FUNCTION!
   #   * Check if gamma = 0 or gamma = 1 and apply a special case/warning if
   #     such a scenario is specified?
+  #   * Re-implement sparsity
 
   if (is.null(Y)) {
     # return warning/set default? return error?
@@ -94,6 +93,7 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
 
   # set up data structures
   L_list <- gradient_list <- vector(mode = 'list', length = maxiter + 1)
+  objective <- vector(mode = 'numeric', length = maxiter + 1)
   n1 <- nrow(Y); n2 <- ncol(Y)
 
   ##################
@@ -115,58 +115,56 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
 
   L_list[[1]] <- U[,1:r] %*% crossprod(U[,1:r], L)
   gradient_list[[1]] <- L
+  objective[1] <- norm(gradient_list[[1]], "f")
 
   if (verbose) {
-    print(
-      paste0("k = 0. Gradient/objective value = ",
-             sprintf("%.5g", norm(gradient_list[[1]], "f"), 5)))
+    print(paste0("k = 0. Objective value = ", sprintf("%.5g", objective[1], 5)))
   }
 
   #========================#
   # BEGIN GRADIENT DESCENT #
   #========================#
-  if (retraction[1] == "projective" |
-      retraction[1] == "proj" |
-      retraction[1] == "p") {
+  out <- vector(mode = "list", length = 2)
 
-    for (k in 1:maxiter) {
+  for (k in 1:maxiter) {
+    if (retraction[1] == "projective" |
+        retraction[1] == "proj" |
+        retraction[1] == "p") {
+
       out <- projective_retraction(L = L_list[[k]], Y = Y, r = r, gamma = gamma,
                                    eta = stepsize, sparsity = sparsity)
-      L_list[[k + 1]]        <- out$L
-      gradient_list[[k + 1]] <- out$gradient
 
-      if (verbose) {
-        print(
-          paste0("k = ", k, ". Gradient/objective value = ",
-                 sprintf("%.5g", norm(gradient_list[[k + 1]], "f"), 5)))
-      }
-    }
+    } else if (retraction[1] == "orthographic" |
+               retraction[1] == "orth" |
+               retraction[1] == "o") {
 
-  } else if (retraction[1] == "orthographic" |
-             retraction[1] == "orth" |
-             retraction[1] == "o") {
-
-    for (k in 1:maxiter) {
       out <- orthographic_retraction(L = L_list[[k]], Y = Y, r = r, gamma = gamma,
                                      eta = stepsize, sparsity = sparsity)
-      L_list[[k + 1]]        <- out$L
-      gradient_list[[k + 1]] <- out$gradient
 
-      if (verbose) {
-        print(
-          paste0("k = ", k, ". Gradient/objective value = ",
-                 sprintf("%.5g", norm(gradient_list[[k + 1]], "f"), 5)))
-      }
+    } else { # invalid 'retraction' input specified
+      stop("Error in morpca(): Argument 'retraction' must be specified as either 'projective' or 'orthographic'.")
     }
 
-  } else { # invalid 'retraction' input specified
-    stop("Error in morpca(): Argument 'retraction' must be specified as either 'projective' or 'orthographic'.")
+    L_list[[k + 1]]        <- out$L
+    gradient_list[[k + 1]] <- out$gradient
+    objective[k + 1]       <- norm(gradient_list[[k + 1]], "f")
+
+    if (verbose) {
+      print(
+        paste0("k = ", k, ". Objective value = ",
+               sprintf("%.5g", objective[k + 1], 5)))
+    }
+
+    if (!stepsout) { # clear memory
+      L_list[[k]] <- NULL
+      gradient_list[[k]] <- NULL
+    }
+
   }
 
   #================#
   # RETURN OUTPTUS #
   #================#
-  out <- list()
   out <- list("Y"          = Y,
               "rank"       = r,
               "gamma"      = gamma,
@@ -175,14 +173,15 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
               "stepsize"   = stepsize,
               "maxiter"    = maxiter,
               "tol"        = tol,
-              "solution"   = L_list,
-              "gradient"   = gradient_list,
+              "solution"   = L_list[!sapply(L_list, is.null)],
+              "gradient"   = gradient_list[!sapply(gradient_list, is.null)],
+              "objective"  = objective,
               "call"       = match.call())
   # check if the user requests the full descent path output
   # or only the solution for the final low rank matrix
   if (!stepsout) {
-    out$solution <- out$solution[[length(L_list)]]
-    out$gradient <- out$gradient[[length(gradient_list)]]
+    out$solution <- out$solution[[length(out$solution)]]
+    out$gradient <- out$gradient[[length(out$gradient)]]
   }
   class(out) <- "morpca"
   out
