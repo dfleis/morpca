@@ -69,6 +69,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// row_pctls_cpp
+arma::vec row_pctls_cpp(arma::mat A, double prob);
+RcppExport SEXP _morpca_row_pctls_cpp(SEXP ASEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
+    Rcpp::traits::input_parameter< double >::type prob(probSEXP);
+    rcpp_result_gen = Rcpp::wrap(row_pctls_cpp(A, prob));
+    return rcpp_result_gen;
+END_RCPP
+}
+// col_pctls_cpp
+arma::vec col_pctls_cpp(arma::mat A, double prob);
+RcppExport SEXP _morpca_col_pctls_cpp(SEXP ASEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
+    Rcpp::traits::input_parameter< double >::type prob(probSEXP);
+    rcpp_result_gen = Rcpp::wrap(col_pctls_cpp(A, prob));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_morpca_riemann_gradient_cpp", (DL_FUNC) &_morpca_riemann_gradient_cpp, 2},
@@ -76,6 +100,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_morpca_percentile_threshold_cpp", (DL_FUNC) &_morpca_percentile_threshold_cpp, 4},
     {"_morpca_rank_r_approx_cpp", (DL_FUNC) &_morpca_rank_r_approx_cpp, 2},
     {"_morpca_percentile_cpp", (DL_FUNC) &_morpca_percentile_cpp, 2},
+    {"_morpca_row_pctls_cpp", (DL_FUNC) &_morpca_row_pctls_cpp, 2},
+    {"_morpca_col_pctls_cpp", (DL_FUNC) &_morpca_col_pctls_cpp, 2},
     {NULL, NULL, 0}
 };
 

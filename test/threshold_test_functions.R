@@ -9,11 +9,6 @@ my_quantile <- function(x, prob) {
   (1 - h) * x[lo] + h * x[hi]
 }
 threshold1 <- function(X, gamma, sparsity) {
-  # Thresholding
-  #
-  # TO DO:
-  #   * Documentation
-  #   * C++ implementation
   n1 <- nrow(X); n2 <- ncol(X)
 
   t1 <- rep(1, n1); t2 <- rep(1, n2)
@@ -36,24 +31,33 @@ threshold1 <- function(X, gamma, sparsity) {
   X_thresholded
 }
 threshold2 <- function(X, gamma) {
-  row_pctls <- apply(abs(X), 1, quantile, probs = 1 - gamma)
-  col_pctls <- apply(abs(X), 2, quantile, probs = 1 - gamma)
+  X_abs <- abs(X)
+  row_pctls <- apply(X_abs, 1, quantile, probs = 1 - gamma)
+  col_pctls <- apply(X_abs, 2, quantile, probs = 1 - gamma)
 
-  percentile_threshold_cpp(X, row_pctls, col_pctls)
+  percentile_threshold_cpp(X, X_abs, row_pctls, col_pctls)
 }
 threshold3 <- function(X, gamma) {
-  row_pctls <- apply(abs(X), 1, my_quantile, prob = 1 - gamma)
-  col_pctls <- apply(abs(X), 2, my_quantile, prob = 1 - gamma)
+  X_abs <- abs(X)
+  row_pctls <- apply(X_abs, 1, my_quantile, prob = 1 - gamma)
+  col_pctls <- apply(X_abs, 2, my_quantile, prob = 1 - gamma)
 
-  percentile_threshold_cpp(X, row_pctls, col_pctls)
+  percentile_threshold_cpp(X, X_abs, row_pctls, col_pctls)
 }
 threshold4 <- function(X, gamma) {
-  row_pctls <- apply(abs(X), 1, percentile_cpp, prob = 1 - gamma)
-  col_pctls <- apply(abs(X), 2, percentile_cpp, prob = 1 - gamma)
+  X_abs <- abs(X)
+  row_pctls <- apply(X_abs, 1, percentile_cpp, prob = 1 - gamma)
+  col_pctls <- apply(X_abs, 2, percentile_cpp, prob = 1 - gamma)
 
-  percentile_threshold_cpp(X, row_pctls, col_pctls)
+  percentile_threshold_cpp(X, X_abs, row_pctls, col_pctls)
 }
+threshold5 <- function(X, gamma) {
+  X_abs <- abs(X)
+  row_pctls <- row_pctls_cpp(X_abs, 1 - gamma)
+  col_pctls <- col_pctls_cpp(X_abs, 1 - gamma)
 
+  percentile_threshold_cpp(X, X_abs, row_pctls, col_pctls)
+}
 
 
 

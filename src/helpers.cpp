@@ -2,6 +2,7 @@
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
 #include <cmath> // ceil() and floor()
+//#include <algorithm> // partial_sort()
 
 using namespace arma;
 using namespace Rcpp;
@@ -89,10 +90,44 @@ double percentile_cpp(arma::vec x, double prob) {
 	double index = 1 + (n - 1) * prob;
 	int lo = std::floor(index);
 	int hi = std::ceil(index);
-	arma::vec xs = arma::sort(x);
+	x = arma::sort(x);
+	//std::partial_sort(x.begin(), x.begin() + hi, x.end());
 	double h = index - lo;
 	
-  	return (1 - h) * xs(lo - 1) + h * xs(hi - 1);
+  	return (1 - h) * x(lo - 1) + h * x(hi - 1);
+}
+
+// [[Rcpp::export]]
+arma::vec row_pctls_cpp(arma::mat A, double prob) {
+	// computes the rowwise prob-th percentiles of a matrix A
+
+	int nrow = A.n_rows;
+		
+	arma::vec row_pctls;
+	row_pctls.zeros(nrow); // look for more elegant way to initialize
+	
+	arma::mat At = A.t(); // can we do this without taking the transpose?
+	
+	for (int i = 0; i < nrow; i++) {
+		row_pctls(i) = percentile_cpp(At.col(i), prob);
+	}
+		
+	return row_pctls;
+}
+
+// [[Rcpp::export]]
+arma::vec col_pctls_cpp(arma::mat A, double prob) {
+	// computes the columnwise prob-th percentiles of a matrix A
+	int ncol = A.n_cols;
+	
+	arma::vec col_pctls;
+	col_pctls.zeros(ncol); // look for more elegant way to initialize
+	
+	for (int j = 0; j < ncol; j++) {
+		col_pctls(j) = percentile_cpp(A.col(j), prob);
+	}
+	
+	return col_pctls;
 }
 
 

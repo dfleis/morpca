@@ -61,6 +61,9 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
                    stepsout  = F,
                    verbose   = F) {
   # TO DO:
+  #   * When 'tol' is implemented, make sure to remove list entries that are
+  #     left empty after the final iteration is reached (since we initialize)
+  #     the list output to have maxiter elements
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
   #   * Handle partial observations (NA values)
   #   * Handle missing and invalid inputs

@@ -21,3 +21,11 @@ percentile_cpp <- function(x, prob) {
     .Call('_morpca_percentile_cpp', PACKAGE = 'morpca', x, prob)
 }
 
+row_pctls_cpp <- function(A, prob) {
+    .Call('_morpca_row_pctls_cpp', PACKAGE = 'morpca', A, prob)
+}
+
+col_pctls_cpp <- function(A, prob) {
+    .Call('_morpca_col_pctls_cpp', PACKAGE = 'morpca', A, prob)
+}
+
