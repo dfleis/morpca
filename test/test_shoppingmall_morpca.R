@@ -97,3 +97,11 @@ plot(obj[2:length(obj)], type = 'o', pch = 21, bg = 'white',
 plot(abs(diff(obj[2:length(obj)])), type = 'o', pch = 21, bg = 'white',
      log = 'y', cex = 0.75, main = "Objective")
 
+
+
+
+
+
+
+
+
