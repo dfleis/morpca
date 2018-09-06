@@ -8,7 +8,7 @@ library(morpca)
 retraction <- "o"
 n1 <- 500 # rows
 n2 <- 600 # columns
-r <- 5 # r must be 0 < r <= min(n1, n2)
+r <- 5 # r must be 1 <= r <= min(n1, n2)
 
 SIGMA <- diag(r)
 gamma <- 0.2 # threshold
@@ -42,7 +42,7 @@ L.opt <- morpca(Y = Y, r = r, gamma = gamma,
                 retraction = retraction,
                 stepsize   = stepsize,
                 maxiter    = maxiter,
-                stepsout   = F,
+                stepsout   = T,
                 verbose    = T)
 proc.time() - pt
 

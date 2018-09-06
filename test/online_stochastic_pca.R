@@ -89,3 +89,19 @@ plot(obj[2:length(obj)], type = 'o', pch = 21, cex = 0.75, bg = 'white')
 
 sapply(M_list, rankMatrix)
 
+
+
+eig <- eigen(M0)
+V <- eig$vectors
+s <- rep(1, length(eig$values))
+s[1] <- .Machine$double.eps
+
+X <- V %*% diag(s) %*% t(V)
+V %*% diag(exp(s)) %*% t(V)
+expm(X)
+
+round(V %*% diag(log(s)) %*% t(V) - logm(X), 6)
+V %*% diag(log(s)) %*% t(V)
+logm(X)
+
+
