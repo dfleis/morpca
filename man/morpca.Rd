@@ -6,7 +6,7 @@
 \usage{
 morpca(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   retraction = c("projective", "orthographic"), stepsize = NULL,
-  maxiter = 100, tol = NULL, stepsout = F, verbose = F)
+  maxiter = 100, stepsout = F, verbose = F)
 }
 \arguments{
 \item{Y}{Input matrix composed of the sum of matrices \eqn{L^*}
@@ -29,8 +29,6 @@ retractions.}
 
 \item{maxiter}{Positive nonzero integer specifying the maximum number
 of steps to compute for the gradient descent algorithm.}
-
-\item{tol}{TO DO...}
 
 \item{stepsout}{Boolean value. If \code{stepsout = T} then the function
 returns the output low rank matrix estimate and corresponding
@@ -68,7 +66,7 @@ both the projective and orthographic retractions as methods to map from
 the input matrix's tangent space back to the manifold of low rank matrices.
 Robustness is achieved via a hard thresholding function which sets
 entry \eqn{(i,j)} to 0 if it exceeds the \eqn{\gamma}-th percentile of the
-\eqn{i}-th row and \eqn{j}-th column (see Zhang, T. and Yang, Y., forthcoming,
+\eqn{i}-th row and \eqn{j}-th column (see Zhang, T. and Yang, Y. (forthcoming)
 for details).
 
 TO DO... Talk about the objective function and a brief overview of

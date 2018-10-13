@@ -11,7 +11,7 @@
 #' the input matrix's tangent space back to the manifold of low rank matrices.
 #' Robustness is achieved via a hard thresholding function which sets
 #' entry \eqn{(i,j)} to 0 if it exceeds the \eqn{\gamma}-th percentile of the
-#' \eqn{i}-th row and \eqn{j}-th column (see Zhang, T. and Yang, Y., forthcoming,
+#' \eqn{i}-th row and \eqn{j}-th column (see Zhang, T. and Yang, Y. (forthcoming)
 #' for details).
 #'
 #' TO DO... Talk about the objective function and a brief overview of
@@ -31,7 +31,6 @@
 #'                 \eqn{\eta} in the gradient descent algorithm.
 #' @param maxiter Positive nonzero integer specifying the maximum number
 #'                of steps to compute for the gradient descent algorithm.
-#' @param tol TO DO...
 #' @param stepsout Boolean value. If \code{stepsout = T} then the function
 #'                 returns the output low rank matrix estimate and corresponding
 #'                 gradient for every step in the gradient descent algorithm.
@@ -58,7 +57,6 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
                    retraction = c("projective", "orthographic"),
                    stepsize  = NULL,
                    maxiter   = 100,
-                   tol       = NULL,
                    stepsout  = F,
                    verbose   = F) {
   # TO DO:
@@ -92,12 +90,12 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
     # return warning/set default? return error?
     # check if stepsize <= 0
   }
-  if (is.null(tol)) { # (not actually implemented yet)
-    # there's probably some theoretical guideline in the paper
-    # look through it to set something up...
-    tol <- ncol(Y) * nrow(Y) * .Machine$double.eps
-  }
-
+  # convergence tolerance
+  #if (is.null(tol)) { # (not actually implemented yet)
+  #  # there's probably some theoretical guideline in the paper
+  # # look through it to set something up...
+  #  tol <- ncol(Y) * nrow(Y) * .Machine$double.eps
+  #}
 
   # set up data structures
   L_list <- gradient_list <- vector(mode = 'list', length = maxiter + 1)
@@ -116,7 +114,8 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   #L_list[[1]] <- rank_r_approx_cpp(Y, r)
   #gradient_list[[1]] <- percentile_threshold(L_list[[1]] - Y, gamma)
 
-  ### NEW: (not sure what this starting point is?)
+  ### NEW: (not sure what this starting point is/what is its theoretical
+  # justification?)
   L <- threshold(Y, gamma, sparsity)
   SVD <- svd(tcrossprod(L))
   U <- SVD$u
@@ -184,7 +183,6 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
               "retraction" = retraction,
               "stepsize"   = stepsize,
               "maxiter"    = maxiter,
-              "tol"        = tol,
               "solution"   = L_list[!sapply(L_list, is.null)],
               "gradient"   = gradient_list[!sapply(gradient_list, is.null)],
               "objective"  = objective,

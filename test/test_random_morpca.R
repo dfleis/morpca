@@ -6,8 +6,8 @@ library(morpca)
 #===== set parameters =====#
 #==========================#
 retraction <- "o"
-n1 <- 500 # rows
-n2 <- 600 # columns
+n1 <- 50 # rows
+n2 <- 60 # columns
 r <- 5 # r must be 1 <= r <= min(n1, n2)
 
 SIGMA <- diag(r)
