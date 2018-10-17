@@ -1,6 +1,7 @@
 #' Manifold Optimization for Robust PCA
 #'
-#' TO DO...
+#' A robust PCA algorithm designed to extract an underlying low-rank matrix
+#' with grossly corrupted observations.
 #'
 #' @details Implementation of the robust PCA algorithms outlined in
 #' Zhang, T. and Yang, Y. (forthcoming) to recover the underlying low rank
@@ -61,8 +62,6 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
                    verbose   = F) {
   # TO DO:
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
-  #     NOTE: tol should depend on the size of the input matrix,
-  #           for example something like n1 * n2 * .Machine$double.eps
   #   * Handle partial observations (NA values)
   #   * Handle missing and invalid inputs
   #   * Determine what the default retraction ought to be
@@ -72,7 +71,6 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   #     threshold() FUNCTION!
   #   * Check if gamma = 0 or gamma = 1 and apply a special case/warning if
   #     such a scenario is specified?
-  #   * Re-implement sparsity
 
   if (is.null(Y)) {
     # return warning/set default? return error?

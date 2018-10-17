@@ -54,7 +54,8 @@ seek an underlying low rank matrix.}
 \item{objective}{Corresponding value of the objective function (Frobenius norm of the gradient matrix).}
 }
 \description{
-TO DO...
+A robust PCA algorithm designed to extract an underlying low-rank matrix
+with grossly corrupted observations.
 }
 \details{
 Implementation of the robust PCA algorithms outlined in
