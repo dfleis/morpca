@@ -15,8 +15,11 @@
 #' \eqn{i}-th row and \eqn{j}-th column (see Zhang, T. and Yang, Y. (forthcoming)
 #' for details).
 #'
-#' TO DO... Talk about the objective function and a brief overview of
-#' the gradient descent process.
+#' To recover \eqn{L^*} we solve the following optimization problem:
+#' \deqn{argmin_{rank(L) = r} f(L),}
+#' where
+#' \deqn{f(L) = 1/2 || F(L - Y) ||^2_F,}
+#' such that \eqn{F} is the hard-thresholding function described above.
 #'
 #' @param Y Input matrix composed of the sum of matrices \eqn{L^*}
 #'          (signal) and \eqn{S^*} (noise).
@@ -46,9 +49,9 @@
 #' \item{rank}{Rank of the estimated target underlying matrix.}
 #' \item{gamma}{Thresholding percentile.}
 #' \item{sparsity}{TO DO...}
-#' \item{retraction}{TO DO...}
-#' \item{stepsize}{TO DO...}
-#' \item{maxiter}{TO DO...}
+#' \item{retraction}{User specified retraction.}
+#' \item{stepsize}{User defined step size for the gradient descent process.}
+#' \item{maxiter}{Maximum number of iterations before the gradient descent process terminates.}
 #' \item{solution}{Estimated underlying low rank matrix. List of matrices if \code{stepsout = T}.}
 #' \item{gradient}{Corresponding gradient matrix of the objective function. List of matrices if \code{stepsout = T}.}
 #' \item{objective}{Corresponding value of the objective function (Frobenius norm of the gradient matrix).}
@@ -64,13 +67,8 @@ morpca <- function(Y = NULL, r = NULL, gamma = NULL, sparsity = NULL,
   #   * Set escape condition under a sufficient tolerance (i.e. 10^-10 or something)
   #   * Handle partial observations (NA values)
   #   * Handle missing and invalid inputs
-  #   * Determine what the default retraction ought to be
-  #   * Make 'verbose' work more elegantly
-  #   * Set default behavior for inputs
   #   * Rename input 'gamma' to 'threshold' NOTE: WE MUST RENAME THE CORRESPONDING
   #     threshold() FUNCTION!
-  #   * Check if gamma = 0 or gamma = 1 and apply a special case/warning if
-  #     such a scenario is specified?
 
   if (is.null(Y)) {
     # return warning/set default? return error?

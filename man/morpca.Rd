@@ -70,6 +70,8 @@ entry \eqn{(i,j)} to 0 if it exceeds the \eqn{\gamma}-th percentile of the
 \eqn{i}-th row and \eqn{j}-th column (see Zhang, T. and Yang, Y. (forthcoming)
 for details).
 
-TO DO... Talk about the objective function and a brief overview of
-the gradient descent process.
+To recover \eqn{L^*} we solve the following optimization problem:
+\deqn{argmin_{rank(L) = r}~f(L)},
+where
+\deqn{f(L) = 1/2 || F(L - Y) ||^2_F}
 }
