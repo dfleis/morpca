@@ -6,8 +6,8 @@ library(morpca)
 #===== set parameters =====#
 #==========================#
 retraction <- "o"
-n1 <- 50 # rows
-n2 <- 60 # columns
+n1 <- 500 # rows
+n2 <- 600 # columns
 r <- 5 # r must be 1 <= r <= min(n1, n2)
 
 SIGMA <- diag(r)
@@ -46,9 +46,9 @@ L.opt <- morpca(Y = Y, r = r, gamma = gamma,
                 verbose    = T)
 proc.time() - pt
 
-obj1 <- L.opt$objective
-obj2 <- obj1/norm(Y, "f")
-
+# objective function (Frobenius norm of the gradient matrix)
+obj <- L.opt$objective
+# error from true (low-rank) signal
 err <- sapply(L.opt$solution, function(L) norm(L - Lstar, "f"))
 
 #===================#
@@ -57,6 +57,6 @@ err <- sapply(L.opt$solution, function(L) norm(L - Lstar, "f"))
 #image(Y, col = colorRampPalette(c("white", "black"))(64))
 #image(Lstar, col = colorRampPalette(c("white", "black"))(64))
 
-plot(obj1, type = 'l', log = 'y')
-plot(obj2, type = 'l', log = 'y')
-plot(err, type = 'l', log = 'y')
+plot(obj, type = 'l', log = 'y', main = "Objective Value",
+     sub = "Frob. Norm of the Gradient Matrix")
+plot(err, type = 'l', log = 'y', main = "Error from True Signal (Frob. Norm)")
