@@ -14,7 +14,8 @@ threshold(X, gamma, sparsity)
 \item{sparsity}{TO DO...}
 }
 \value{
-Returns a real-valued matrix with thresholded entries.
+Returns a real-valued matrix with \eqn{\gamma}-thresholded
+entries.
 }
 \description{
 Computes the hard-thresholding of a given real-valued matrix \eqn{X}
@@ -25,7 +26,7 @@ The hard-thresholding procedure will set the \eqn{(i,j)}-th
 entry of X to 0 if
 \deqn{|X_{i,j}| > |X^{[\gamma]}_{i,.}|}
 and
-\deqn{|X_{i,j}| > |X^{[\gamma]}_{.,j}|},
+\deqn{|X_{i,j}| > |X^{[\gamma]}_{.,j}|,}
 where \eqn{X_{i,.}} denotes the \eqn{i}-th row of \eqn{X}, and
 \eqn{X_{.,j}} represents the \eqn{j}-th column of \eqn{X}. Additionally,
 \eqn{X^{[\gamma]}_{i,.}} and \eqn{X^{[\gamma]}_{.,j}} represent the

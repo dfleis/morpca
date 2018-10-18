@@ -7,7 +7,7 @@
 #' entry of X to 0 if
 #' \deqn{|X_{i,j}| > |X^{[\gamma]}_{i,.}|}
 #' and
-#' \deqn{|X_{i,j}| > |X^{[\gamma]}_{.,j}|},
+#' \deqn{|X_{i,j}| > |X^{[\gamma]}_{.,j}|,}
 #' where \eqn{X_{i,.}} denotes the \eqn{i}-th row of \eqn{X}, and
 #' \eqn{X_{.,j}} represents the \eqn{j}-th column of \eqn{X}. Additionally,
 #' \eqn{X^{[\gamma]}_{i,.}} and \eqn{X^{[\gamma]}_{.,j}} represent the
@@ -23,7 +23,8 @@
 #' @param gamma Thresholding percentile.
 #' @param sparsity TO DO...
 #'
-#' @return Returns a real-valued matrix with thresholded entries.
+#' @return Returns a real-valued matrix with \eqn{\gamma}-thresholded
+#' entries.
 #'
 #' @export
 threshold <- function(X, gamma, sparsity) {
