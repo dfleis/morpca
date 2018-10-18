@@ -1,4 +1,4 @@
-#' Hard-Thresholding
+#' Matrix Hard-Thresholding
 #'
 #' Computes the hard-thresholding of a given real-valued matrix \eqn{X}
 #' according to thresholding percentile \eqn{\gamma}.

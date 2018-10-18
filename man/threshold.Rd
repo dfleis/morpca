@@ -2,7 +2,7 @@
 % Please edit documentation in R/threshold.R
 \name{threshold}
 \alias{threshold}
-\title{Hard-Thresholding}
+\title{Matrix Hard-Thresholding}
 \usage{
 threshold(X, gamma, sparsity)
 }

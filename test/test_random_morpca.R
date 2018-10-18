@@ -1,13 +1,15 @@
 #library(devtools)
 #install_github("dfleis/morpca")
 library(morpca)
+library(matrixvis)
 
 #==========================#
 #===== set parameters =====#
 #==========================#
 retraction <- "o"
-n1 <- 500 # rows
-n2 <- 600 # columns
+n1 <- 50 # rows
+n2 <- 60 # columns
+nb_sparse <- 5 # nb of elements to replace with noise (columnwise)
 r <- 5 # r must be 1 <= r <= min(n1, n2)
 
 SIGMA <- diag(r)
@@ -28,7 +30,8 @@ V <- svd_X$v[,1:r]
 
 Lstar <- U %*% SIGMA %*% t(V)
 
-Y <- apply(Lstar, 2, function(l) {l[sample(n1, 25)] <- rnorm(25); l})
+Y <- apply(Lstar, 2, function(l)
+  {l[sample(n1, nb_sparse)] <- rnorm(nb_sparse); l})
 Sstar <- Y - Lstar
 
 sparsity_mat <- matrix(1, nrow = n1, ncol = n2)
@@ -54,8 +57,10 @@ err <- sapply(L.opt$solution, function(L) norm(L - Lstar, "f"))
 #===================#
 #===== FIGURES =====#
 #===================#
-#image(Y, col = colorRampPalette(c("white", "black"))(64))
-#image(Lstar, col = colorRampPalette(c("white", "black"))(64))
+bwr_col <- colorRampPalette(c("blue", "white", "red"))
+image_matrix(Lstar, main = "Signal", col = bwr_col(32), legend = T, zlim = range(Lstar))
+image_matrix(Sstar, main = "Sparse Noise", col = bwr_col(32), legend = T, zlim = range(Sstar))
+image_matrix(Y, main = "Input Data", col = bwr_col(32), legend = T, zlim = range(Y))
 
 plot(obj, type = 'l', log = 'y', main = "Objective Value",
      sub = "Frob. Norm of the Gradient Matrix")
