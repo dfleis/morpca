@@ -2,30 +2,30 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 riemann_gradient_cpp <- function(L, D) {
-    .Call('_morpca_riemann_gradient_cpp', PACKAGE = 'morpca', L, D)
+    .Call(`_morpca_riemann_gradient_cpp`, L, D)
 }
 
 orthographic_retraction_cpp <- function(L_tmp, Q, R) {
-    .Call('_morpca_orthographic_retraction_cpp', PACKAGE = 'morpca', L_tmp, Q, R)
+    .Call(`_morpca_orthographic_retraction_cpp`, L_tmp, Q, R)
 }
 
 percentile_threshold_cpp <- function(A, A_abs, row_pctls, col_pctls) {
-    .Call('_morpca_percentile_threshold_cpp', PACKAGE = 'morpca', A, A_abs, row_pctls, col_pctls)
+    .Call(`_morpca_percentile_threshold_cpp`, A, A_abs, row_pctls, col_pctls)
 }
 
 rank_r_approx_cpp <- function(Y, r) {
-    .Call('_morpca_rank_r_approx_cpp', PACKAGE = 'morpca', Y, r)
+    .Call(`_morpca_rank_r_approx_cpp`, Y, r)
 }
 
 percentile_cpp <- function(x, prob) {
-    .Call('_morpca_percentile_cpp', PACKAGE = 'morpca', x, prob)
+    .Call(`_morpca_percentile_cpp`, x, prob)
 }
 
 row_pctls_cpp <- function(A, prob) {
-    .Call('_morpca_row_pctls_cpp', PACKAGE = 'morpca', A, prob)
+    .Call(`_morpca_row_pctls_cpp`, A, prob)
 }
 
 col_pctls_cpp <- function(A, prob) {
-    .Call('_morpca_col_pctls_cpp', PACKAGE = 'morpca', A, prob)
+    .Call(`_morpca_col_pctls_cpp`, A, prob)
 }
 

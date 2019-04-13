@@ -1,9 +1,3 @@
-useDynLib(morpca)
-
+useDynLib(morpca, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
-
-export(morpca,
-       threshold,
-       projective_retraction,
-       orthographic_retraction,
-       print.morpca)
+exportPattern("^[[:alpha:]]+")
