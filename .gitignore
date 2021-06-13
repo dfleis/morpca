@@ -13,3 +13,7 @@
 .Rproj.user
 inst/doc
 
+# compiled src files (C/C++)
+*.o
+*.so
+*.dll
