@@ -4,7 +4,7 @@
 \alias{hello}
 \title{Prints 'Hello, world!'}
 \usage{
-hello(x)
+hello(id, x)
 }
 \description{
 Prints 'Hello, world!'
