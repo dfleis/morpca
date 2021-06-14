@@ -16,7 +16,6 @@ orthographic_retraction <- function(L, Y, r, gamma, eta) {
   #   * Check if n1 > n2 or n2 < n1 since we can speed up
   #     multiplications by knowing which case we're in
   #   * Set this up as an @internal R function
-
   gradient <- threshold(L - Y, gamma)
 
   # I forget why we sample here, wouldn't it be faster to be deterministic?
