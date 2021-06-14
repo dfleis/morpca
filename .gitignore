@@ -7,6 +7,7 @@
 
 # Example code in package build process
 *-Ex.R
+test/data
 
 # Mac file
 .DS_Store
