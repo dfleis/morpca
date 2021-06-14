@@ -7,8 +7,8 @@ projective_retraction <- function(L, Y, gamma, eta) {
   # stepsize eta
 
   # handle partial (NA) observations
-  Y_tmp <- Y
-  Y_tmp[is.na(Y_tmp)] <- 0
+  #Y_tmp <- Y
+  #Y[is.na(Y_tmp)] <- 0
 
   return (L - eta * riemann_gradient(L, threshold(L - Y, gamma)))
 }
